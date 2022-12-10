@@ -1,13 +1,17 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 public class Ship {
 	
 	int x,y;
 	int vx;
 	int vy;
-	static int speed = 2;
+	static int speedx = 4;
+	static int speedy = 2;
 	int WIDTH = 50;
 	int HEIGHT = 30;
 	
@@ -21,6 +25,7 @@ public class Ship {
 	
 	void move() {
 		x += vx;
+		y += vy;
 		
 	}
 	

@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -78,11 +79,16 @@ public class Game extends Thread implements KeyListener{
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_A) {
-			player.vx = -Ship.speed;
-		}
-			
+			player.vx = -Ship.speedx;
+		}	
 		else if (key == KeyEvent.VK_D) {
-			player.vx = Ship.speed;
+			player.vx = Ship.speedx;
+		}
+		else if (key == KeyEvent.VK_W) {
+			player.vy = -Ship.speedy;
+		}
+		else if (key == KeyEvent.VK_S) {
+			player.vy = Ship.speedy;
 		}
 	}
 
@@ -97,6 +103,12 @@ public class Game extends Thread implements KeyListener{
 		else if (key == KeyEvent.VK_D) {
 			player.vx = 0;
 		
-	}
+		}
+		else if (key == KeyEvent.VK_W) {
+			player.vy = 0;
+		}
+		else if (key == KeyEvent.VK_S) {
+			player.vy = 0;
+		}
 	}
 }

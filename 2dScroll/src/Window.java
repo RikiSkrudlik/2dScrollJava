@@ -1,5 +1,6 @@
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -37,6 +38,9 @@ public class Window extends Frame implements WindowListener{
 		paint(gr);
 	}
 	
+	void initImages() {
+		
+	}
 	
 	
 	
