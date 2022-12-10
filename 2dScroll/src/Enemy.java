@@ -14,7 +14,7 @@ public class Enemy {
 	}
 	
 	void move() {
-		x += v;
+		y -= v;
 	}
 	
 	void attack() {

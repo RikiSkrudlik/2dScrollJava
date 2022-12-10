@@ -5,7 +5,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 public class Window extends Frame implements WindowListener{
-	Game g;
+	Game game;
 	Image im;
 	Graphics gr;
 
@@ -20,13 +20,13 @@ public class Window extends Frame implements WindowListener{
 	Window(){ //Main window game
 		super("Game");
 		setSize(WIDTH, HEIGHT);
-		addWindowListener(this);
-		g = new Game(this);
 		setVisible(true); 
-		im = createImage(WIDTH, HEIGHT);
+		addWindowListener(this);
+		im = this.createImage(WIDTH, HEIGHT);
 		gr = im.getGraphics();
+		game = new Game(this);
 		
-		g.run();
+		game.start();
 	}
 	
 	public void paint(Graphics gr) {
@@ -37,6 +37,13 @@ public class Window extends Frame implements WindowListener{
 		paint(gr);
 	}
 	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public void windowOpened(WindowEvent e) {
 		// TODO Auto-generated method stub
@@ -46,6 +53,7 @@ public class Window extends Frame implements WindowListener{
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
+		System.exit(0);
 		
 	}
 

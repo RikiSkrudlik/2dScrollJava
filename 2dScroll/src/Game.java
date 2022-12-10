@@ -1,28 +1,35 @@
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Game {
+public class Game extends Thread implements KeyListener{
 	
-	Window w;
+	
+	static Window window;
+	static Graphics graphics;
 	//int y;
-	Ship s[] = new Ship[3];
-	Game(Window w){
-		this.w = w;
+	Ship player;
+	
+	Game (Window w){
+		window = w;
+		graphics = w.gr;
+		window.addKeyListener(this);
+		window.setFocusable(true);
 	}
 	
-	//Game logic
-	
-	void run() {
+	public void run() {
 		//Initialize screen objects
 		//y = 50;
-		s[0] = new Ship(50,50,1);
-		s[1] = new Ship(50,150,2);
-		s[2] = new Ship(70,250,3);
 		
+		player = new Ship(50, 50);
+
 		while(true) {
 			
 			moveObjects(); //Move screen objects 
 			//Detect collisions
-			repaintScreen();//Repaint screen
+			repaintScreen(); //Repaint screen
+			window.repaint(); 
 			
 			try {
 				Thread.sleep(50);
@@ -35,20 +42,61 @@ public class Game {
 	
 	void moveObjects() {
 		//y++;
-		for (int i = 0; i < s.length; i++) {
-			s[i].move();
-		}
+		player.move();
+
 	}
 	
 	void repaintScreen() { //Draw new line and repaint screen
-		w.gr.setColor(Color.WHITE);
-		w.gr.fillRect(0, 0, w.WIDTH, w.HEIGHT);
+		graphics.setColor(Color.WHITE);
+		graphics.fillRect(0, 0, window.WIDTH, window.HEIGHT);
 		//w.gr.setColor(Color.BLUE);
 		//w.gr.drawLine(50, 50, 700, y);
-		for (int i = 0; i < s.length; i++) {
-			s[i].paint(w.gr);
-		}
+		player.paint(graphics);
 
-		w.repaint(); 
+	}
+	
+	void initialize() {
+		
+	}
+	
+	void shoot() {
+		
+	}
+	
+	void checkDeath() {
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_A) {
+			player.vx = -Ship.speed;
+		}
+			
+		else if (key == KeyEvent.VK_D) {
+			player.vx = Ship.speed;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		 //TODO Auto-generated method stub
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_A) {
+			player.vx = 0;
+		}
+			
+		else if (key == KeyEvent.VK_D) {
+			player.vx = 0;
+		
+	}
 	}
 }
