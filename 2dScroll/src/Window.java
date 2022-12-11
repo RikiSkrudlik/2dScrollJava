@@ -1,9 +1,12 @@
 import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class Window extends Frame implements WindowListener{
 	Game game;
@@ -38,9 +41,6 @@ public class Window extends Frame implements WindowListener{
 		paint(gr);
 	}
 	
-	void initImages() {
-		
-	}
 	
 	
 	
