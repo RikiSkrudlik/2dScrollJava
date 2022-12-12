@@ -22,6 +22,18 @@ public class Ship {
 	}
 	
 	void move() {
+		if (x < 15 && vx < 0) { //Left side collision
+			return;
+		}
+		if (x > Game.window.WIDTH - WIDTH && vx > 0) {
+			return;
+		}
+		if (y < 15 && vy < 0) {
+			return; 
+		}
+		if (y > Game.window.HEIGHT - HEIGHT && vy > 0) {
+			return;
+		}
 		x += vx;
 		y += vy;
 		
@@ -34,9 +46,13 @@ public class Ship {
 
 		gr.drawRect(x, y, WIDTH-30, HEIGHT -35);
 		getBounds();
-//		gr.setColor(Color.BLACK);
-//		gr.drawRect(x, y, WIDTH, HEIGHT);
-//		gr.drawLine((int)(x + WIDTH*0.75), y,(int)(x + WIDTH*0.75), (int)(y+HEIGHT));
+
+	}
+	
+	void checkBorder() {//To check if ship touches border
+		if (x == Game.window.WIDTH) {
+			vx = 0;
+		}
 	}
 	
 	public Rectangle getBounds() {

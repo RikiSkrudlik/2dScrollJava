@@ -16,14 +16,14 @@ public class Game extends Thread implements KeyListener{
 	static Window window;
 	static Graphics graphics;
 	static Image img;
-	//int y;
+	int enemyCount = 20;
+	int lifeCount = 3;
+	//float scrollFactor = 0.5f; //Moves the background 0.5 pixels up per call of the draw method
 	
 	Ship player;
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>(); //Dinamic Array
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>(); //Dinamic Array
 	
-	int enemyCount = 20;
-	int lifeCount = 3;
 	//Enemy enemies[] = new Enemy[5];
 	Random rand = new Random();
 	
@@ -39,13 +39,13 @@ public class Game extends Thread implements KeyListener{
 		//y = 50;
 		
 		initObjects();
-		
 		initImages(); //Initialize images sprites for the game
 
 		while(true) {
 			
 			moveObjects(); //Move screen objects 
 			checkCollisions();//Detect collisions
+			checkDeath();
 			repaintScreen(); //Repaint screen
 			window.repaint(); 
 			
@@ -60,6 +60,7 @@ public class Game extends Thread implements KeyListener{
 	
 	void moveObjects() {
 		//y++;
+		player.checkBorder();
 		player.move();
 		for (int i = 0; i < enemies.size(); i++) {
 			enemies.get(i).move();
@@ -73,10 +74,11 @@ public class Game extends Thread implements KeyListener{
 	void repaintScreen() { //Draw new line and repaint screen
 		
 		graphics.setColor(Color.BLACK);
-		//graphics.fillRect(0, 0, window.WIDTH, window.HEIGHT);
 		graphics.drawImage(img, 0, 0, window.WIDTH, window.HEIGHT, null);
-		//w.gr.setColor(Color.BLUE);
-		//w.gr.drawLine(50, 50, 700, y);
+		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
+		graphics.setColor(Color.YELLOW);
+		graphics.drawString("Life: " + lifeCount, 60 , 60);
+
 		player.paint(graphics);
 		
 		for (int i = 0; i < enemies.size(); i++) {
@@ -97,12 +99,16 @@ public class Game extends Thread implements KeyListener{
 					rand.nextInt(window.HEIGHT), rand.nextInt(7)));
 		}
 	}
-	
+		
 	void shoot() {
 		
 	}
 	
 	void checkDeath() {
+		
+		if (lifeCount == 0) {
+			System.exit(0);
+		}
 		
 	}
 	
