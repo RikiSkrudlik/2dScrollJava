@@ -3,7 +3,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 
-public class Enemy2 {
+public class Enemy2 extends Enemy{
 	
 	int x,y;
 	int speedx;
@@ -14,9 +14,7 @@ public class Enemy2 {
 	static Image img;
 
 	Enemy2(int x, int y, int v) {
-		this.x = x;
-		this.y = y;
-		this.speedx = v;
+		super(x, y, v);
 	}
 	
 	void move() {
@@ -24,6 +22,8 @@ public class Enemy2 {
 	}
 	
 	void attack() {
+		
+		
 		
 	}
 	
