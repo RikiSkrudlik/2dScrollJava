@@ -7,7 +7,7 @@ public class Bullet {
 	
 	int x;
 	int y;
-	int vx = 14;
+	int vx = 18;
 	int WIDTH = 50;
 	int HEIGHT = 50;
 	
@@ -35,4 +35,5 @@ public class Bullet {
 	public Rectangle getBounds() {
 		return new Rectangle(x, y, WIDTH - 15, HEIGHT - 10);
 	}
+	
 }

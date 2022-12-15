@@ -18,15 +18,15 @@ public class Game extends Thread implements KeyListener{
 	static Image img;
 	int enemyCount = 20;
 	int lifeCount = 3;
-	//float scrollFactor = 0.5f; //Moves the background 0.5 pixels up per call of the draw method
+	long timeOfLastBullet = System.currentTimeMillis();
 	
 	Ship player;
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>(); //Dinamic Array
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>(); //Dinamic Array
 	
-	//Enemy enemies[] = new Enemy[5];
 	Random rand = new Random();
 	
+
 	Game (Window w){
 		window = w;
 		graphics = w.gr;
@@ -46,6 +46,7 @@ public class Game extends Thread implements KeyListener{
 			moveObjects(); //Move screen objects 
 			checkCollisions();//Detect collisions
 			checkDeath();
+			checkBounds();
 			repaintScreen(); //Repaint screen
 			window.repaint(); 
 			
@@ -99,10 +100,6 @@ public class Game extends Thread implements KeyListener{
 					rand.nextInt(window.HEIGHT), rand.nextInt(7)));
 		}
 	}
-		
-	void shoot() {
-		
-	}
 	
 	void checkDeath() {
 		
@@ -110,6 +107,12 @@ public class Game extends Thread implements KeyListener{
 			System.exit(0);
 		}
 		
+	}
+	
+	void checkBounds() {
+		for (int i = 0; i < bullets.size(); i++) {
+			checkBulletBounds(bullets.get(i));
+		}
 	}
 	
 	void checkCollisions() {
@@ -142,20 +145,27 @@ public class Game extends Thread implements KeyListener{
 	}
 	
 	
-	void addEnemy(Enemy e) {
+	public void addEnemy(Enemy e) {
 		enemies.add(e);
 	}
 	
-	void removeEnemy(Enemy e) {
+	public void removeEnemy(Enemy e) {
 		enemies.remove(e);
 	}
 	
-	void addBullet(Bullet b) {
+	public void addBullet(Bullet b) {
 		bullets.add(b);
 	}
 	
-	void removeBullet(Bullet b) {
+	public void removeBullet(Bullet b) {
 		bullets.remove(b);
+	}
+	
+	public void checkBulletBounds(Bullet b) { //If bullet leaves the screen then destroy!
+		if (b.x > window.WIDTH) {
+			removeBullet(b);
+			System.out.println("Bullet out");
+		}
 	}
 	
 	@Override
@@ -168,20 +178,27 @@ public class Game extends Thread implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_A) {
+		if (key == KeyEvent.VK_A) { //Left
 			player.vx = -Ship.speedx;
 		}	
-		else if (key == KeyEvent.VK_D) {
+		else if (key == KeyEvent.VK_D) { //Right
 			player.vx = Ship.speedx;
 		}
-		else if (key == KeyEvent.VK_W) {
+		else if (key == KeyEvent.VK_W) { //Up
 			player.vy = -Ship.speedy;
 		}
-		else if (key == KeyEvent.VK_S) {
+		else if (key == KeyEvent.VK_S) { //Down
 			player.vy = Ship.speedy;
 		}
-		else if (key == KeyEvent.VK_L) {
-			bullets.add(new Bullet(20 + player.x, 20 + player.y));
+		else if (key == KeyEvent.VK_L) { //Player shooting
+			
+			long timeNow = System.currentTimeMillis();
+			long time = timeNow - timeOfLastBullet;
+			
+			if (time < 0 || time > 1000) { //Max of 1 shot per second
+			    timeOfLastBullet = timeNow;
+			    bullets.add(new Bullet(20 + player.x, 20 + player.y));
+			}
 		}
 	}
 
@@ -204,20 +221,4 @@ public class Game extends Thread implements KeyListener{
 			player.vy = 0;
 		}
 	}
-	
-	
-	//Enemy[] eraseEnemy(Enemy enemies [], int index) { //Function to erase an element from an array
-//		
-//		Enemy[] copy = new Enemy[enemies.length - 1]; //Create a copy -1 length
-//		
-//		int j = 0;
-//		
-//		for (int i = 0; i < enemies.length; i++) {
-//			if (i != index) {
-//				copy[j] = enemies[i]; //We copy everything but the element to remove
-//				j++;
-//			}
-//		}	
-//		return copy;	
-//	}
 }
