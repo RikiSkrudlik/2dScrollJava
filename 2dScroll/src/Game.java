@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -144,6 +146,18 @@ public class Game extends Thread implements KeyListener{
 		}
 	}
 	
+	void initFont() {
+		
+		Font font;
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("font/space_game.ttf"));
+			font = font.deriveFont(Font.PLAIN, 20);
+			graphics.setFont(font);
+		} catch (FontFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public void addEnemy(Enemy e) {
 		enemies.add(e);
