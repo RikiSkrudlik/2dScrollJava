@@ -18,6 +18,7 @@ public class Game extends Thread implements KeyListener{
 	static Window window;
 	static Graphics graphics;
 	static Image img;
+	static Menu menu;
 	int enemyCount = 20;
 	int lifeCount = 3;
 	long timeOfLastBullet = System.currentTimeMillis();
@@ -42,9 +43,14 @@ public class Game extends Thread implements KeyListener{
 		
 		initObjects();
 		initImages(); //Initialize images sprites for the game
+		initFont();
+		
+		menu = new Menu(Game.window);
+		
+		menu.start();
 
 		while(true) {
-			
+						
 			moveObjects(); //Move screen objects 
 			checkCollisions();//Detect collisions
 			checkDeath();
@@ -58,6 +64,44 @@ public class Game extends Thread implements KeyListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	
+	
+	void initImages() { //Initializes images for the game
+		try {
+			Ship.img = ImageIO.read(new File("res/Ship1.png"));
+			Enemy.img = ImageIO.read(new File("res/Ship2.png"));
+			Bullet.img = ImageIO.read(new File("res/Bullet.png"));
+			Game.img = ImageIO.read(new File("res/Background.png"));
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	void initFont() {
+		
+		Font font;
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("font/space_game.ttf"));
+			font = font.deriveFont(Font.PLAIN, 20);
+			graphics.setFont(font);
+		} catch (FontFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	void initObjects() {
+		
+		player = new Ship(50, 50); //Init player
+		
+		for (int i = 0; i < enemyCount; i++) { //Init enemies1
+			addEnemy(new Enemy(600 + rand.nextInt(window.WIDTH), 
+					rand.nextInt(window.HEIGHT), rand.nextInt(7)));
 		}
 	}
 	
@@ -78,7 +122,6 @@ public class Game extends Thread implements KeyListener{
 		
 		graphics.setColor(Color.BLACK);
 		graphics.drawImage(img, 0, 0, window.WIDTH, window.HEIGHT, null);
-		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
 		graphics.setColor(Color.YELLOW);
 		graphics.drawString("Life: " + lifeCount, 60 , 60);
 
@@ -91,16 +134,6 @@ public class Game extends Thread implements KeyListener{
 			bullets.get(i).paint(graphics);
 		}
 
-	}
-	
-	void initObjects() {
-		
-		player = new Ship(50, 50); //Init player
-		
-		for (int i = 0; i < enemyCount; i++) { //Init enemies1
-			addEnemy(new Enemy(600 + rand.nextInt(window.WIDTH), 
-					rand.nextInt(window.HEIGHT), rand.nextInt(7)));
-		}
 	}
 	
 	void checkDeath() {
@@ -130,32 +163,6 @@ public class Game extends Thread implements KeyListener{
 					removeBullet(bullets.get(j));
 				}
 			}
-		}
-	}
-	
-	void initImages() { //Initializes images for the game
-		try {
-			Ship.img = ImageIO.read(new File("res/Ship1.png"));
-			Enemy.img = ImageIO.read(new File("res/Ship2.png"));
-			Bullet.img = ImageIO.read(new File("res/Bullet.png"));
-			Game.img = ImageIO.read(new File("res/Background.png"));
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	void initFont() {
-		
-		Font font;
-		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new File("font/space_game.ttf"));
-			font = font.deriveFont(Font.PLAIN, 20);
-			graphics.setFont(font);
-		} catch (FontFormatException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
