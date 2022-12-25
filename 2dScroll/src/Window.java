@@ -9,7 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Window extends Frame implements WindowListener{
-	Game game;
+	Menu menu;
 	Image im;
 	Graphics gr;
 
@@ -28,9 +28,9 @@ public class Window extends Frame implements WindowListener{
 		addWindowListener(this);
 		im = this.createImage(WIDTH, HEIGHT);
 		gr = im.getGraphics();
-		game = new Game(this);
+		menu = new Menu(this);
+		menu.start();
 		
-		game.start();
 	}
 	
 	public void paint(Graphics gr) {
@@ -40,9 +40,6 @@ public class Window extends Frame implements WindowListener{
 	public void update(Graphics gr) {
 		paint(gr);
 	}
-	
-	
-	
 	
 	
 	

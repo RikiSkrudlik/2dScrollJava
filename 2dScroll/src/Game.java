@@ -19,11 +19,13 @@ public class Game extends Thread implements KeyListener{
 	static Graphics graphics;
 	static Image img;
 	static Menu menu;
-	int enemyCount = 20;
+	static Boolean playing = false; //Know if you are currently playing
+	static int gamemode; //3 difficulty gamemodes
+	int enemyCount;
 	int lifeCount = 3;
 	long timeOfLastBullet = System.currentTimeMillis();
 	
-	Ship player;
+	static Ship player;
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>(); //Dinamic Array
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>(); //Dinamic Array
 	
@@ -44,6 +46,8 @@ public class Game extends Thread implements KeyListener{
 		initObjects();
 		initImages(); //Initialize images sprites for the game
 		initFont();
+		
+		System.out.println(" " +enemyCount);
 		
 		menu = new Menu(Game.window);
 		
@@ -98,6 +102,7 @@ public class Game extends Thread implements KeyListener{
 	void initObjects() {
 		
 		player = new Ship(50, 50); //Init player
+		enemyCount = 20*gamemode;
 		
 		for (int i = 0; i < enemyCount; i++) { //Init enemies1
 			addEnemy(new Enemy(600 + rand.nextInt(window.WIDTH), 
@@ -200,10 +205,20 @@ public class Game extends Thread implements KeyListener{
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_A) { //Left
-			player.vx = -Ship.speedx;
+			try {
+				player.vx = -Ship.speedx;
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}	
 		else if (key == KeyEvent.VK_D) { //Right
-			player.vx = Ship.speedx;
+			try {
+				player.vx = Ship.speedx;
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		else if (key == KeyEvent.VK_W) { //Up
 			player.vy = -Ship.speedy;

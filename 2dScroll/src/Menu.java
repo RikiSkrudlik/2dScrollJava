@@ -15,6 +15,8 @@ public class Menu extends Thread implements KeyListener{
 	Window w;
 	Graphics gr;
 	static Image img;
+	static Game game;
+	static boolean active;
 	
 	public Menu(Window w) {
 		this.w = w;
@@ -26,10 +28,8 @@ public class Menu extends Thread implements KeyListener{
 		
 		initImages();
 		initFont();
-		
-		while(true) {
-			
-			repaintScreen();
+						
+		while(active) {
 			
 			try {
 				Thread.sleep(50);
@@ -37,8 +37,14 @@ public class Menu extends Thread implements KeyListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			System.out.println("Eee funcionant + " +active);
+			repaintScreen();
+			w.repaint();
+			
 		}
 		
+		w.removeKeyListener(this);
+				
 	}
 	
 	public void initImages() {
@@ -56,10 +62,12 @@ public class Menu extends Thread implements KeyListener{
 	
 	public void initFont() {
 		
+		active = true;
+		
 		Font font;
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("font/space_game.ttf"));
-			font = font.deriveFont(Font.PLAIN, 20);
+			font = font.deriveFont(Font.PLAIN, 50);
 			gr.setFont(font);
 		} catch (FontFormatException | IOException e) {
 			// TODO Auto-generated catch block
@@ -74,7 +82,7 @@ public class Menu extends Thread implements KeyListener{
 		gr.drawImage(img, 0, 0, w.WIDTH, w.HEIGHT, null);
 		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
 		gr.setColor(Color.YELLOW);
-		gr.drawString("Life: " , 60 , 60);
+		gr.drawString("EASY MODE (PRESS 1) ", 200 , 200);
 
 		
 	}
@@ -88,13 +96,65 @@ public class Menu extends Thread implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_1) {
+			try {
+				game = new Game(w);
+				w.removeKeyListener(this);
+				game.start();
+				active = false;
+				Game.gamemode = 1; //Easy mode
+			} 
+			catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			}
+		else if (key == KeyEvent.VK_2) { 
+			try {
+				game = new Game(w);
+				active = false;
+				game.start();
+				Game.gamemode = 2; //Medium	
+				w.removeKeyListener(this);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	
+		}
+		else if (key == KeyEvent.VK_3) { 
+			try {
+				game = new Game(w);
+				Game.gamemode = 3; //Hard mode
+				game.start();
+				active = false;
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
 		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_1) {
+			active = false;
+		}
+			
+		else if (key == KeyEvent.VK_2) {
+			active = false;
 		
+		}
+		else if (key == KeyEvent.VK_3) {
+			active = false;
+		}
+
 	}
 	
 	
