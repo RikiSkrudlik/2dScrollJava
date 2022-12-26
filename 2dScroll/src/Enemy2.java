@@ -1,11 +1,9 @@
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 
-public class Enemy2 extends Enemy{
+public class Enemy2 extends Enemy {
 	
-	int x,y;
 	int speedx;
 	int speedy;
 	int WIDTH = 160;
@@ -17,21 +15,16 @@ public class Enemy2 extends Enemy{
 		super(x, y, v);
 	}
 	
-	void move() {
-		x -= speedx;
-	}
-	
 	void attack() {
 		
-		
-		
+			
 	}
 	
 	void paint(Graphics gr) {
 		
 		gr.drawImage(img, x, y, WIDTH, HEIGHT, null);
-		gr.setColor(Color.ORANGE);
-		gr.drawRect(x+45, y+40, hitBoxx, hitBoxy);
+		//gr.setColor(Color.ORANGE);
+		//gr.drawRect(x+45, y+40, hitBoxx, hitBoxy);
 
 		getBounds();
 	}

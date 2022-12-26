@@ -16,7 +16,7 @@ public class Menu extends Thread implements KeyListener{
 	Graphics gr;
 	static Image img;
 	static Game game;
-	static boolean active;
+	static boolean active = true;
 	
 	public Menu(Window w) {
 		this.w = w;
@@ -25,7 +25,7 @@ public class Menu extends Thread implements KeyListener{
 	}
 	
 	public void run() {//Menu loop, similar procedure to the game class
-		
+				
 		initImages();
 		initFont();
 						
@@ -61,8 +61,6 @@ public class Menu extends Thread implements KeyListener{
 	}
 	
 	public void initFont() {
-		
-		active = true;
 		
 		Font font;
 		try {
@@ -100,9 +98,9 @@ public class Menu extends Thread implements KeyListener{
 		if (key == KeyEvent.VK_1) {
 			try {
 				game = new Game(w);
+				active = false;
 				w.removeKeyListener(this);
 				game.start();
-				active = false;
 				Game.gamemode = 1; //Easy mode
 			} 
 			catch (Exception e1) {

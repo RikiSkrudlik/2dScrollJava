@@ -42,9 +42,9 @@ public class Ship {
 	void paint(Graphics gr) {
 		
 		gr.drawImage(img, x, y, WIDTH, HEIGHT, null);
-		gr.setColor(Color.ORANGE);
+		//gr.setColor(Color.ORANGE);
 
-		gr.drawRect(x, y, WIDTH-30, HEIGHT -35);
+		//gr.drawRect(x, y, WIDTH-30, HEIGHT -35);
 		getBounds();
 
 	}

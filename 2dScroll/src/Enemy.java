@@ -7,8 +7,8 @@ public class Enemy {
 	
 	int x,y;
 	int speedx;
-	int WIDTH = 180;
-	int HEIGHT = 150;
+	static int WIDTH = 180;
+	static int HEIGHT = 150;
 	
 	static Image img;
 
@@ -29,8 +29,8 @@ public class Enemy {
 	void paint(Graphics gr) {
 		
 		gr.drawImage(img, x, y, WIDTH, HEIGHT, null);
-		gr.setColor(Color.ORANGE);
-		gr.drawRect(x+45, y+40, hitBoxx, hitBoxy);
+		//gr.setColor(Color.ORANGE);
+		//gr.drawRect(x+45, y+40, hitBoxx, hitBoxy);
 
 		getBounds();
 	}

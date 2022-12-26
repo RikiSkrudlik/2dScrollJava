@@ -10,15 +10,11 @@ public class BulletEnemy extends Bullet{
 		super(x, y);
 	}
 	
-	void move() {
-		x += -vx;
-	}
-	
 	void paint(Graphics gr) {
 		
 		gr.drawImage(img, x, y, WIDTH, HEIGHT, null);
 		gr.setColor(Color.BLACK);
-		gr.drawRect(x, y, WIDTH-15, HEIGHT -15);
+		gr.drawRect(x, y, WIDTH - 15, HEIGHT - 15);
 		getBounds();
 	}
 }

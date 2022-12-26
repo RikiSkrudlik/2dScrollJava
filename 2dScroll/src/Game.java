@@ -20,7 +20,8 @@ public class Game extends Thread implements KeyListener{
 	static Image img;
 	static Menu menu;
 	static Boolean playing = false; //Know if you are currently playing
-	static int gamemode; //3 difficulty gamemodes
+	static int gamemode, x, y; //3 difficulty gamemodes
+	static double dx = 0.1, dy = 0.1;
 	int enemyCount;
 	int lifeCount = 3;
 	long timeOfLastBullet = System.currentTimeMillis();
@@ -76,7 +77,8 @@ public class Game extends Thread implements KeyListener{
 	void initImages() { //Initializes images for the game
 		try {
 			Ship.img = ImageIO.read(new File("res/Ship1.png"));
-			Enemy.img = ImageIO.read(new File("res/Ship2.png"));
+			Enemy1.img = ImageIO.read(new File("res/Enemy1.png"));
+			Enemy2.img = ImageIO.read(new File("res/Enemy2.png"));
 			Bullet.img = ImageIO.read(new File("res/Bullet.png"));
 			Game.img = ImageIO.read(new File("res/Background.png"));
 			
@@ -104,8 +106,12 @@ public class Game extends Thread implements KeyListener{
 		player = new Ship(50, 50); //Init player
 		enemyCount = 20*gamemode;
 		
-		for (int i = 0; i < enemyCount; i++) { //Init enemies1
-			addEnemy(new Enemy(600 + rand.nextInt(window.WIDTH), 
+		for (int i = 0; i < enemyCount/2; i++) { //Init enemies1
+			addEnemy(new Enemy1(600 + rand.nextInt(window.WIDTH), 
+					rand.nextInt(window.HEIGHT), rand.nextInt(7)));
+		}
+		for (int j = 0; j < enemyCount/2; j++) { //Init and create enemies2
+			addEnemy(new Enemy2(600 + rand.nextInt(window.WIDTH), 
 					rand.nextInt(window.HEIGHT), rand.nextInt(7)));
 		}
 	}
@@ -114,6 +120,7 @@ public class Game extends Thread implements KeyListener{
 		//y++;
 		player.checkBorder();
 		player.move();
+		
 		for (int i = 0; i < enemies.size(); i++) {
 			enemies.get(i).move();
 		}
@@ -141,6 +148,14 @@ public class Game extends Thread implements KeyListener{
 
 	}
 	
+	void scrollBackground() {
+		
+		x += dx;
+		y += dy;
+		
+		
+	}
+	
 	void checkDeath() {
 		
 		if (lifeCount == 0) {
@@ -152,6 +167,9 @@ public class Game extends Thread implements KeyListener{
 	void checkBounds() {
 		for (int i = 0; i < bullets.size(); i++) {
 			checkBulletBounds(bullets.get(i));
+		}
+		for (int i = 0; i < enemies.size(); i++) {
+			checkEnemyBounds(enemies.get(i));
 		}
 	}
 	
@@ -172,7 +190,7 @@ public class Game extends Thread implements KeyListener{
 	}
 	
 	public void addEnemy(Enemy e) {
-		enemies.add(e);
+		enemies.add(e);		
 	}
 	
 	public void removeEnemy(Enemy e) {
@@ -191,6 +209,13 @@ public class Game extends Thread implements KeyListener{
 		if (b.x > window.WIDTH) {
 			removeBullet(b);
 			System.out.println("Bullet out");
+		}
+	}
+	
+	public void checkEnemyBounds(Enemy e) { //If bullet leaves the screen then destroy!
+		if (e.x < -Enemy.WIDTH) {
+			removeEnemy(e);
+			System.out.println("Enemy out");
 		}
 	}
 	
