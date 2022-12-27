@@ -12,6 +12,8 @@ public class Enemy {
 	
 	static Image img;
 
+	long timeOfLastBullet = System.currentTimeMillis();
+	
 	Enemy(int x, int y, int v) {
 		this.x = x;
 		this.y = y;
@@ -22,8 +24,8 @@ public class Enemy {
 		x -= speedx;
 	}
 	
-	void attack() {
-		
+	void attack() {	
+			
 	}
 	
 	void paint(Graphics gr) {

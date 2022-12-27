@@ -1,4 +1,5 @@
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
@@ -25,14 +26,15 @@ public class Game extends Thread implements KeyListener{
 	int enemyCount;
 	int lifeCount = 3;
 	long timeOfLastBullet = System.currentTimeMillis();
+	long timeOfLastBulletYe = timeOfLastBullet;
 	
 	static Ship player;
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>(); //Dinamic Array
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>(); //Dinamic Array
+	static ArrayList<BulletEnemy> enemyBullets = new ArrayList<BulletEnemy>(); //Dinamic Array
 	
 	Random rand = new Random();
 	
-
 	Game (Window w){
 		window = w;
 		graphics = w.gr;
@@ -56,8 +58,9 @@ public class Game extends Thread implements KeyListener{
 
 		while(true) {
 						
-			moveObjects(); //Move screen objects 
+			moveObjects(); //Move screen objects
 			checkCollisions();//Detect collisions
+			enemiesAttack();
 			checkDeath();
 			checkBounds();
 			repaintScreen(); //Repaint screen
@@ -80,6 +83,7 @@ public class Game extends Thread implements KeyListener{
 			Enemy1.img = ImageIO.read(new File("res/Enemy1.png"));
 			Enemy2.img = ImageIO.read(new File("res/Enemy2.png"));
 			Bullet.img = ImageIO.read(new File("res/Bullet.png"));
+			BulletEnemy.img = ImageIO.read(new File("res/BulletEnemy.png"));
 			Game.img = ImageIO.read(new File("res/Background.png"));
 			
 		} catch (IOException e) {
@@ -104,15 +108,15 @@ public class Game extends Thread implements KeyListener{
 	void initObjects() {
 		
 		player = new Ship(50, 50); //Init player
-		enemyCount = 20*gamemode;
+		enemyCount = 3*gamemode;
 		
 		for (int i = 0; i < enemyCount/2; i++) { //Init enemies1
 			addEnemy(new Enemy1(600 + rand.nextInt(window.WIDTH), 
-					rand.nextInt(window.HEIGHT), rand.nextInt(7)));
+					rand.nextInt(window.HEIGHT), rand.nextInt(4,7)));
 		}
 		for (int j = 0; j < enemyCount/2; j++) { //Init and create enemies2
 			addEnemy(new Enemy2(600 + rand.nextInt(window.WIDTH), 
-					rand.nextInt(window.HEIGHT), rand.nextInt(7)));
+					rand.nextInt(window.HEIGHT), rand.nextInt(4,7)));
 		}
 	}
 	
@@ -127,7 +131,37 @@ public class Game extends Thread implements KeyListener{
 		for (int i = 0; i < bullets.size(); i++) {
 			bullets.get(i).move();
 		}
+		for (int i = 0; i < enemyBullets.size(); i++) {
+			enemyBullets.get(i).move();
+		}
 
+	}
+	
+	void enemiesAttack() {
+		
+		long timeNowYe = System.currentTimeMillis();
+		long timeYe = timeNowYe - timeOfLastBulletYe;
+		
+		int max = 9;
+		int min = 2;
+		
+		int randomizer = (int)(Math.random()*(max-min+1)+min); 
+		
+		if (timeYe < 0 || timeYe > 10000/randomizer) { //Enemy shooting is random
+		    timeOfLastBulletYe = timeNowYe;
+		    
+		    for (int i = 0; i < enemies.size(); i++) {
+		    	
+				int randomizer2 = (int)(Math.random()*(4-1+1)+1); 
+
+				//We create a random 1/4 chance for the specific enemy to shoot
+				
+				if (randomizer2 == 3) { 
+					enemies.get(i).attack();
+				}
+		    }
+		}
+		
 	}
 	
 	void repaintScreen() { //Draw new line and repaint screen
@@ -139,11 +173,14 @@ public class Game extends Thread implements KeyListener{
 
 		player.paint(graphics);
 		
-		for (int i = 0; i < enemies.size(); i++) {
+		for (int i = 0; i < enemies.size(); i++) { //Paint enemies
 			enemies.get(i).paint(graphics); 
 		}
-		for (int i = 0; i < bullets.size(); i++) {
+		for (int i = 0; i < bullets.size(); i++) { //Paint your bullets
 			bullets.get(i).paint(graphics);
+		}
+		for (int i = 0; i < enemyBullets.size(); i++) { //Paint enemy bullets
+			enemyBullets.get(i).paint(graphics);
 		}
 
 	}
@@ -152,19 +189,17 @@ public class Game extends Thread implements KeyListener{
 		
 		x += dx;
 		y += dy;
-		
-		
+			
 	}
 	
-	void checkDeath() {
+	void checkDeath() { //Simple lifecount if equals to 0 game over
 		
 		if (lifeCount == 0) {
 			System.exit(0);
-		}
-		
+		}		
 	}
 	
-	void checkBounds() {
+	void checkBounds() { //If out of bounds then make disappear
 		for (int i = 0; i < bullets.size(); i++) {
 			checkBulletBounds(bullets.get(i));
 		}
@@ -180,7 +215,7 @@ public class Game extends Thread implements KeyListener{
 				removeEnemy(enemies.get(i));
 				lifeCount -= 1;
 			}
-			for (int j = 0; j < bullets.size(); j++) {
+			for (int j = 0; j < bullets.size(); j++) { 
 				if (bullets.get(j).getBounds().intersects(enemies.get(i).getBounds())) { //Checks intersections with rectangles
 					removeEnemy(enemies.get(i));
 					removeBullet(bullets.get(j));

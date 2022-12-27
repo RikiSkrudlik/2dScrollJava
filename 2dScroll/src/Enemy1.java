@@ -6,6 +6,8 @@ public class Enemy1 extends Enemy{
 	int speedy;
 	int WIDTH = 160;
 	int HEIGHT = 120;
+	
+	long timeOfLastBullet = System.currentTimeMillis();
 
 	Enemy1(int x, int y, int v) {
 		super(x, y, v);
@@ -13,7 +15,8 @@ public class Enemy1 extends Enemy{
 	}
 	
 
-	void attack() {		
+	void attack() {	
+		
 			
 	}
 	

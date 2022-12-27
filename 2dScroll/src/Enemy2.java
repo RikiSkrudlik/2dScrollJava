@@ -17,7 +17,8 @@ public class Enemy2 extends Enemy {
 	
 	void attack() {
 		
-			
+		Game.enemyBullets.add(new BulletEnemy(20 + this.x, 20 + this.y));
+		System.out.println("EEEE ATACO!");
 	}
 	
 	void paint(Graphics gr) {
