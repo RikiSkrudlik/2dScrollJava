@@ -80,7 +80,9 @@ public class Menu extends Thread implements KeyListener{
 		gr.drawImage(img, 0, 0, w.WIDTH, w.HEIGHT, null);
 		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
 		gr.setColor(Color.YELLOW);
-		gr.drawString("EASY MODE (PRESS 1) ", 200 , 200);
+		gr.drawString("EASY MODE (PRESS 1) ", 200 , 300);
+		gr.drawString("NORMAL MODE (PRESS 2) ", 200 , 400);
+		gr.drawString("HARD MODE (PRESS 3) ", 200 , 500);
 
 		
 	}

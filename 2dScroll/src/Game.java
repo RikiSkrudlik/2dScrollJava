@@ -1,5 +1,4 @@
 import java.awt.Color;
-
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.LineUnavailableException;
 
 public class Game extends Thread implements KeyListener{
 	
@@ -24,6 +24,7 @@ public class Game extends Thread implements KeyListener{
 	static int gamemode, x, y; //3 difficulty gamemodes
 	static double dx = 0.1, dy = 0.1;
 	int enemyCount;
+	static Sound sound;
 	int lifeCount = 3;
 	long timeOfLastBullet = System.currentTimeMillis();
 	long timeOfLastBulletYe = timeOfLastBullet;
@@ -49,6 +50,8 @@ public class Game extends Thread implements KeyListener{
 		initObjects();
 		initImages(); //Initialize images sprites for the game
 		initFont();
+
+		initSounds();
 		
 		System.out.println(" " +enemyCount);
 		
@@ -74,8 +77,6 @@ public class Game extends Thread implements KeyListener{
 			}
 		}
 	}
-	
-	
 	
 	void initImages() { //Initializes images for the game
 		try {
@@ -120,6 +121,32 @@ public class Game extends Thread implements KeyListener{
 		}
 	}
 	
+	void initSounds() throws LineUnavailableException {
+		
+		sound = new Sound();
+		System.out.println("repdroduin...");
+
+		playMusic(0);
+
+	}
+	
+	public void playMusic(int i) throws LineUnavailableException {
+		
+		sound.setFile(i);
+		sound.play();
+		sound.loop();
+	}
+	
+	public void stopMusic() {
+		sound.stop();
+	}
+	
+	public void playSE(int i) throws LineUnavailableException {
+		
+		sound.setFile(i);
+		sound.play();
+	}
+	
 	void moveObjects() {
 		//y++;
 		player.checkBorder();
@@ -152,7 +179,7 @@ public class Game extends Thread implements KeyListener{
 		    
 		    for (int i = 0; i < enemies.size(); i++) {
 		    	
-				int randomizer2 = (int)(Math.random()*(4-1+1)+1); 
+				int randomizer2 = (int)(Math.random()*(4)+1); 
 
 				//We create a random 1/4 chance for the specific enemy to shoot
 				

@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -6,7 +5,7 @@ import java.awt.Rectangle;
 public class Enemy {
 	
 	int x,y;
-	int speedx;
+	int speedx, speedy;
 	static int WIDTH = 180;
 	static int HEIGHT = 150;
 	
@@ -18,12 +17,15 @@ public class Enemy {
 		this.x = x;
 		this.y = y;
 		this.speedx = v;
+		this.speedy = v;
 	}
 	
 	void move() {
+		
 		x -= speedx;
+
 	}
-	
+
 	void attack() {	
 			
 	}

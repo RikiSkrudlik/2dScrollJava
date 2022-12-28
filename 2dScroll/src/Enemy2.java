@@ -30,6 +30,7 @@ public class Enemy2 extends Enemy {
 		getBounds();
 	}
 	
+	
 	int hitBoxx = WIDTH - 60;
 	int hitBoxy = HEIGHT - 80;
 	
