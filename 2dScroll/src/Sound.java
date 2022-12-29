@@ -12,10 +12,13 @@ public class Sound {
 	Clip clip;
 	URL soundURL[] = new URL[30];
 	
-	public Sound() {
+	public Sound() { //get all the sounds in an URL array
 		
-		soundURL[0] = getClass().getResource("sound/Main.wav"); 
-		soundURL[0] = getClass().getResource("sound/Menu.wav"); 
+			soundURL[0] = getClass().getResource("sound/Main.wav"); //Main song
+			soundURL[1] = getClass().getResource("sound/Menu.wav"); //Menu song
+			//Now sound effects
+			soundURL[2] = getClass().getResource("sound/playerBullet.wav");
+			soundURL[3] = getClass().getResource("sound/enemyBullet.wav");
 	}
 	
 	public void setFile(int i) throws LineUnavailableException {

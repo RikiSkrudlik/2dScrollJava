@@ -50,8 +50,12 @@ public class Game extends Thread implements KeyListener{
 		initObjects();
 		initImages(); //Initialize images sprites for the game
 		initFont();
-
-		initSounds();
+		try {
+			initSounds();
+		} catch (LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		System.out.println(" " +enemyCount);
 		
@@ -124,8 +128,6 @@ public class Game extends Thread implements KeyListener{
 	void initSounds() throws LineUnavailableException {
 		
 		sound = new Sound();
-		System.out.println("repdroduin...");
-
 		playMusic(0);
 
 	}
@@ -321,7 +323,14 @@ public class Game extends Thread implements KeyListener{
 			if (time < 0 || time > 1000) { //Max of 1 shot per second
 			    timeOfLastBullet = timeNow;
 			    bullets.add(new Bullet(20 + player.x, 20 + player.y));
+			    try {
+					playSE(3);
+				} catch (LineUnavailableException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
+			
 		}
 	}
 

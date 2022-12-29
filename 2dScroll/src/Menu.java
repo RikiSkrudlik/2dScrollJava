@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.LineUnavailableException;
 
 public class Menu extends Thread implements KeyListener{
 	
@@ -17,6 +18,8 @@ public class Menu extends Thread implements KeyListener{
 	static Image img;
 	static Game game;
 	static boolean active = true;
+	static Sound sound;
+	int counter = 0;
 	
 	public Menu(Window w) {
 		this.w = w;
@@ -28,6 +31,14 @@ public class Menu extends Thread implements KeyListener{
 				
 		initImages();
 		initFont();
+		try {
+			initSounds();
+		} catch (LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		System.out.println("Contador: "+counter);
 						
 		while(active) {
 			
@@ -37,11 +48,12 @@ public class Menu extends Thread implements KeyListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Eee funcionant + " +active);
+			//System.out.println("Eee funcionant + " +active);
 			repaintScreen();
 			w.repaint();
 			
 		}
+		stopMusic();
 		
 		w.removeKeyListener(this);
 				
@@ -74,6 +86,36 @@ public class Menu extends Thread implements KeyListener{
 		
 	}
 	
+	void initSounds() throws LineUnavailableException {
+		
+		sound = new Sound();
+		try {
+			playMusic(1);
+		} catch (LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("repdroduin...");
+
+	}
+	
+	public void playMusic(int i) throws LineUnavailableException {
+		
+		sound.setFile(i);
+		sound.play();
+		sound.loop();
+	}
+	
+	public void stopMusic() {
+		sound.stop();
+	}
+	
+	public void playSE(int i) throws LineUnavailableException {
+		
+		sound.setFile(i);
+		sound.play();
+	}
+	
 	public void repaintScreen() { //Paint Menu elements
 		
 		gr.setColor(Color.BLACK);
@@ -99,6 +141,8 @@ public class Menu extends Thread implements KeyListener{
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_1) {
 			try {
+				stopMusic();
+				counter += 1;
 				game = new Game(w);
 				active = false;
 				w.removeKeyListener(this);
@@ -127,6 +171,7 @@ public class Menu extends Thread implements KeyListener{
 		else if (key == KeyEvent.VK_3) { 
 			try {
 				game = new Game(w);
+				stopMusic();
 				Game.gamemode = 3; //Hard mode
 				game.start();
 				active = false;
@@ -144,6 +189,7 @@ public class Menu extends Thread implements KeyListener{
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_1) {
+			stopMusic();
 			active = false;
 		}
 			
