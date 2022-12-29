@@ -7,7 +7,7 @@ public class Bullet {
 	
 	int x;
 	int y;
-	int vx = 18;
+	int vx = 10;
 	int WIDTH = 50;
 	int HEIGHT = 50;
 	

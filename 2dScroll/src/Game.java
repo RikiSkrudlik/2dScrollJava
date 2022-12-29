@@ -2,9 +2,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,11 +18,11 @@ public class Game extends Thread implements KeyListener{
 	
 	static Window window;
 	static Graphics graphics;
-	static Image img;
+	static BufferedImage img;
 	static Menu menu;
 	static Boolean playing = false; //Know if you are currently playing
-	static int gamemode, x, y; //3 difficulty gamemodes
-	static double dx = 0.1, dy = 0.1;
+	static int gamemode, x = 0, y; //3 difficulty gamemodes
+	static double dx = 1, dy = 0.1;
 	int enemyCount;
 	static Sound sound;
 	int lifeCount = 3;
@@ -64,17 +64,17 @@ public class Game extends Thread implements KeyListener{
 		menu.start();
 
 		while(true) {
-						
+			
+			repaintScreen(); //Repaint screen			
 			moveObjects(); //Move screen objects
 			checkCollisions();//Detect collisions
 			enemiesAttack();
 			checkDeath();
 			checkBounds();
-			repaintScreen(); //Repaint screen
-			window.repaint(); 
+			
 			
 			try {
-				Thread.sleep(50);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -113,15 +113,15 @@ public class Game extends Thread implements KeyListener{
 	void initObjects() {
 		
 		player = new Ship(50, 50); //Init player
-		enemyCount = 3*gamemode;
+		enemyCount = 10*gamemode;
 		
 		for (int i = 0; i < enemyCount/2; i++) { //Init enemies1
 			addEnemy(new Enemy1(600 + rand.nextInt(window.WIDTH), 
-					rand.nextInt(window.HEIGHT), rand.nextInt(4,7)));
+					rand.nextInt(window.HEIGHT), rand.nextInt(2,4)));
 		}
 		for (int j = 0; j < enemyCount/2; j++) { //Init and create enemies2
 			addEnemy(new Enemy2(600 + rand.nextInt(window.WIDTH), 
-					rand.nextInt(window.HEIGHT), rand.nextInt(4,7)));
+					rand.nextInt(window.HEIGHT), rand.nextInt(2,4)));
 		}
 	}
 	
@@ -197,8 +197,17 @@ public class Game extends Thread implements KeyListener{
 		
 		graphics.setColor(Color.BLACK);
 		graphics.drawImage(img, 0, 0, window.WIDTH, window.HEIGHT, null);
+		//graphics.drawImage(img, -img.getWidth() + x, 0, window.WIDTH, window.HEIGHT, null);
 		graphics.setColor(Color.YELLOW);
 		graphics.drawString("Life: " + lifeCount, 60 , 60);
+		
+		x += dx;
+		y += dy;
+				
+		if (x > img.getWidth()) {
+	        x = 0;
+	        System.out.println("Retornant..");
+	    }
 
 		player.paint(graphics);
 		
@@ -211,13 +220,14 @@ public class Game extends Thread implements KeyListener{
 		for (int i = 0; i < enemyBullets.size(); i++) { //Paint enemy bullets
 			enemyBullets.get(i).paint(graphics);
 		}
+		
+		window.repaint(); 
+
 
 	}
 	
 	void scrollBackground() {
 		
-		x += dx;
-		y += dy;
 			
 	}
 	
@@ -232,6 +242,9 @@ public class Game extends Thread implements KeyListener{
 		for (int i = 0; i < bullets.size(); i++) {
 			checkBulletBounds(bullets.get(i));
 		}
+		for (int i = 0; i < enemyBullets.size(); i++) {
+			checkBulletBounds(enemyBullets.get(i));
+		}
 		for (int i = 0; i < enemies.size(); i++) {
 			checkEnemyBounds(enemies.get(i));
 		}
@@ -240,7 +253,7 @@ public class Game extends Thread implements KeyListener{
 	void checkCollisions() {
 		
 		for (int i = 0; i < enemies.size(); i++) {
-			if (player.getBounds().intersects(enemies.get(i).getBounds())) { //Checks intersections with rectangles
+			if (player.getBounds().intersects(enemies.get(i).getBounds()) ) { //Checks intersections with rectangles
 				removeEnemy(enemies.get(i));
 				lifeCount -= 1;
 			}
@@ -250,8 +263,22 @@ public class Game extends Thread implements KeyListener{
 					removeBullet(bullets.get(j));
 				}
 			}
+			for (int j = 0; j < enemyBullets.size(); j++) { 
+				if (enemyBullets.get(j).getBounds().intersects(player.getBounds())) {
+					lifeCount -= 1;
+					removeEnemyBullet(enemyBullets.get(j));
+				}
+			}
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public void addEnemy(Enemy e) {
 		enemies.add(e);		
@@ -268,18 +295,24 @@ public class Game extends Thread implements KeyListener{
 	public void removeBullet(Bullet b) {
 		bullets.remove(b);
 	}
+	public void addEnemyBullet(BulletEnemy b) {
+		enemyBullets.add(b);
+	}
+	
+	public void removeEnemyBullet(BulletEnemy b) {
+		enemyBullets.remove(b);
+	}
 	
 	public void checkBulletBounds(Bullet b) { //If bullet leaves the screen then destroy!
 		if (b.x > window.WIDTH) {
 			removeBullet(b);
-			System.out.println("Bullet out");
 		}
 	}
 	
 	public void checkEnemyBounds(Enemy e) { //If bullet leaves the screen then destroy!
 		if (e.x < -Enemy.WIDTH) {
 			removeEnemy(e);
-			System.out.println("Enemy out");
+			//System.out.println("Enemy out");
 		}
 	}
 	
