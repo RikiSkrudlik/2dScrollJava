@@ -16,9 +16,10 @@ public class Sound {
 		
 			soundURL[0] = getClass().getResource("sound/Main.wav"); //Main song
 			soundURL[1] = getClass().getResource("sound/Menu.wav"); //Menu song
+			soundURL[2] = getClass().getResource("sound/gameOver.wav");
 			//Now sound effects
-			soundURL[2] = getClass().getResource("sound/playerBullet.wav");
-			soundURL[3] = getClass().getResource("sound/enemyBullet.wav");
+			soundURL[3] = getClass().getResource("sound/playerBullet.wav");
+			soundURL[4] = getClass().getResource("sound/enemyBullet.wav");
 	}
 	
 	public void setFile(int i) throws LineUnavailableException {

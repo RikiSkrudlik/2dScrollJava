@@ -20,14 +20,13 @@ public class Game extends Thread implements KeyListener{
 	static Graphics graphics;
 	static BufferedImage img;
 	static Menu menu;
-	static Boolean playing = false; //Know if you are currently playing
+	static Boolean playing = true; //Know if you are currently playing
 	static int gamemode, x = 0, y; //3 difficulty gamemodes
 	static double dx = 1, dy = 0.1;
 	int enemyCount;
 	static Sound sound;
 	int lifeCount = 3;
-	long timeOfLastBullet = System.currentTimeMillis();
-	long timeOfLastBulletYe = timeOfLastBullet;
+	long initialTime = System.currentTimeMillis();
 	
 	static Ship player;
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>(); //Dinamic Array
@@ -47,7 +46,7 @@ public class Game extends Thread implements KeyListener{
 		//Initialize screen objects
 		//y = 50;
 		
-		initObjects();
+		player = new Ship(50, 50); //Init player
 		initImages(); //Initialize images sprites for the game
 		initFont();
 		try {
@@ -59,11 +58,21 @@ public class Game extends Thread implements KeyListener{
 		
 		System.out.println(" " +enemyCount);
 		
-		menu = new Menu(Game.window);
+		long timeStart = initialTime;
 		
-		menu.start();
-
-		while(true) {
+		while(playing) {
+			
+			//We will be creating enemies every x seconds in random positions
+			//In front of the player
+			
+			long timeNow = System.currentTimeMillis();
+			long time = timeNow - timeStart;
+			
+			if (time < 0 || time > 5000) { //Every 5 seconds create enemies
+			    createEnemies(gamemode);
+			    timeStart = timeNow;
+			    
+			}
 			
 			repaintScreen(); //Repaint screen			
 			moveObjects(); //Move screen objects
@@ -101,7 +110,7 @@ public class Game extends Thread implements KeyListener{
 		
 		Font font;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new File("font/space_game.ttf"));
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("font/arcade.ttf"));
 			font = font.deriveFont(Font.PLAIN, 20);
 			graphics.setFont(font);
 		} catch (FontFormatException | IOException e) {
@@ -110,10 +119,9 @@ public class Game extends Thread implements KeyListener{
 		}
 	}
 	
-	void initObjects() {
+	void createEnemies(int gamemode) {
 		
-		player = new Ship(50, 50); //Init player
-		enemyCount = 10*gamemode;
+		enemyCount = 4*gamemode;
 		
 		for (int i = 0; i < enemyCount/2; i++) { //Init enemies1
 			addEnemy(new Enemy1(600 + rand.nextInt(window.WIDTH), 
@@ -128,7 +136,7 @@ public class Game extends Thread implements KeyListener{
 	void initSounds() throws LineUnavailableException {
 		
 		sound = new Sound();
-		playMusic(0);
+		//playMusic(0);
 
 	}
 	
@@ -166,18 +174,20 @@ public class Game extends Thread implements KeyListener{
 
 	}
 	
+	long lastAttack = initialTime;
+	
 	void enemiesAttack() {
 		
-		long timeNowYe = System.currentTimeMillis();
-		long timeYe = timeNowYe - timeOfLastBulletYe;
+		long timeNow = System.currentTimeMillis();
+		long time = timeNow - lastAttack;
 		
 		int max = 9;
 		int min = 2;
 		
 		int randomizer = (int)(Math.random()*(max-min+1)+min); 
 		
-		if (timeYe < 0 || timeYe > 10000/randomizer) { //Enemy shooting is random
-		    timeOfLastBulletYe = timeNowYe;
+		if (time < 0 || time > 10000/randomizer) { //Enemy shooting is random
+		    lastAttack = timeNow;
 		    
 		    for (int i = 0; i < enemies.size(); i++) {
 		    	
@@ -231,10 +241,12 @@ public class Game extends Thread implements KeyListener{
 			
 	}
 	
-	void checkDeath() { //Simple lifecount if equals to 0 game over
+	void checkDeath() { //Simple lifecount if equals to 0 game over and show endScreen
 		
 		if (lifeCount == 0) {
-			System.exit(0);
+			gameOver endScreen = new gameOver(window);
+			playing = false;
+			endScreen.start();
 		}		
 	}
 	
@@ -275,7 +287,10 @@ public class Game extends Thread implements KeyListener{
 	
 	
 	
-	
+	/*
+	 * Check bounds, remove... Events for the playing mechanics.
+	 * 
+	*/
 	
 	
 	
@@ -316,6 +331,11 @@ public class Game extends Thread implements KeyListener{
 		}
 	}
 	
+	/*
+	 * All key listener events, for the ship moving and shooting
+	 * 
+	*/
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -350,14 +370,15 @@ public class Game extends Thread implements KeyListener{
 		}
 		else if (key == KeyEvent.VK_L) { //Player shooting
 			
+			long lastBullet = initialTime;
 			long timeNow = System.currentTimeMillis();
-			long time = timeNow - timeOfLastBullet;
+			long time = timeNow - lastBullet;
 			
-			if (time < 0 || time > 1000) { //Max of 1 shot per second
-			    timeOfLastBullet = timeNow;
+			if (time < 0 || time > 500) { //Max of 1 shot per second
+			    lastBullet = timeNow;
 			    bullets.add(new Bullet(20 + player.x, 20 + player.y));
 			    try {
-					playSE(3);
+					playSE(4);
 				} catch (LineUnavailableException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

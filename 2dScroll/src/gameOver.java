@@ -11,7 +11,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 
-public class Menu extends Thread implements KeyListener{
+public class gameOver extends Thread implements KeyListener{
 	
 	Window w;
 	Graphics gr;
@@ -20,23 +20,25 @@ public class Menu extends Thread implements KeyListener{
 	static boolean active = true;
 	static Sound sound;
 	int counter = 0;
-	
-	public Menu(Window w) {
+
+	public gameOver(Window w) {
+
 		this.w = w;
 		this.gr = w.gr;
 		w.addKeyListener(this);
-	}
+		// TODO Auto-generated constructor stub
+	} //Game over class it will be similar to the menu
 	
 	public void run() {//Menu loop, similar procedure to the game class
-				
+		
 		initImages();
 		initFont();
-//		try {
-//			initSounds();
-//		} catch (LineUnavailableException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+		try {
+			initSounds();
+		} catch (LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 						
 		while(active) {
 			
@@ -57,11 +59,38 @@ public class Menu extends Thread implements KeyListener{
 				
 	}
 	
+	void initSounds() throws LineUnavailableException {
+		
+		sound = new Sound();
+		try {
+			playMusic(2);
+		} catch (LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+	}
+	
+	public void repaintScreen() { //Paint Menu elements
+		
+		gr.setColor(Color.BLACK);
+		gr.drawImage(img, 0, 0, w.WIDTH, w.HEIGHT, null);
+		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
+		gr.setColor(Color.DARK_GRAY);
+		gr.drawString("YOU LOST... ", 115 , 455);
+
+		gr.setColor(Color.YELLOW);
+		gr.drawString("YOU LOST ", 120 , 450);
+
+
+		
+	}
+	
 	public void initImages() {
 		
 		try {
 
-			Menu.img = ImageIO.read(new File("res/BackgroundBlurr.png"));
+			gameOver.img = ImageIO.read(new File("res/BackgroundBlurr.png"));
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -84,16 +113,7 @@ public class Menu extends Thread implements KeyListener{
 		
 	}
 	
-	void initSounds() throws LineUnavailableException {
-		
-		sound = new Sound();
-		try {
-			playMusic(1);
-		} catch (LineUnavailableException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
+
 	
 	public void playMusic(int i) throws LineUnavailableException {
 		
@@ -112,30 +132,6 @@ public class Menu extends Thread implements KeyListener{
 		sound.play();
 	}
 	
-	public void repaintScreen() { //Paint Menu elements
-		
-		gr.setColor(Color.BLACK);
-		gr.drawImage(img, 0, 0, w.WIDTH, w.HEIGHT, null);
-		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
-		gr.setColor(Color.DARK_GRAY);
-		gr.drawString("EASY MODE (PRESS 1) ", 115 , 455);
-		gr.drawString("NORMAL MODE (PRESS 2) ", 115 , 555);
-		gr.drawString("HARD MODE (PRESS 3) ", 115 , 655);
-		gr.setColor(Color.YELLOW);
-		gr.drawString("EASY MODE (PRESS 1) ", 120 , 450);
-		gr.drawString("NORMAL MODE (PRESS 2) ", 120 , 550);
-		gr.drawString("HARD MODE (PRESS 3) ", 120 , 650);
-
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
@@ -199,7 +195,12 @@ public class Menu extends Thread implements KeyListener{
 		}
 
 	}
-	
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

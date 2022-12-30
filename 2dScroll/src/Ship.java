@@ -7,8 +7,8 @@ public class Ship {
 	int x,y;
 	int vx;
 	int vy;
-	static int speedx = 11;
-	static int speedy = 8;
+	static int speedx = 8;
+	static int speedy = 6;
 	int WIDTH = 150;
 	int HEIGHT = 90;
 	
