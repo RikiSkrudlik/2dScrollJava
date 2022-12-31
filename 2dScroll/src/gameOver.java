@@ -48,14 +48,17 @@ public class gameOver extends Thread implements KeyListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//System.out.println("Eee funcionant + " +active);
+			System.out.println("Eee funcionant + " +active);
 			repaintScreen();
 			w.repaint();
 			
+			
 		}
 		//stopMusic();
-		
+		game = new Game(w);
+		game.start();
 		w.removeKeyListener(this);
+		
 				
 	}
 	
@@ -77,10 +80,14 @@ public class gameOver extends Thread implements KeyListener{
 		gr.drawImage(img, 0, 0, w.WIDTH, w.HEIGHT, null);
 		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
 		gr.setColor(Color.DARK_GRAY);
-		gr.drawString("YOU LOST... ", 115 , 455);
+		gr.drawString("YOU LOST... ", 115 , 355);
+		gr.drawString("PLAY AGAIN (1, 2, 3)", 115 , 455);
+		gr.drawString("TO SEE RECORDS PRESS 9", 120 , 555);
 
 		gr.setColor(Color.YELLOW);
-		gr.drawString("YOU LOST ", 120 , 450);
+		gr.drawString("YOU LOST... ", 120 , 350);
+		gr.drawString("TO PLAY AGAIN SELECT DIFFICULTY (1, 2, 3)", 120 , 450);
+		gr.drawString("TO SEE RECORDS PRESS 9", 120 , 550);
 
 
 		
@@ -165,9 +172,7 @@ public class gameOver extends Thread implements KeyListener{
 		}
 		else if (key == KeyEvent.VK_3) { 
 			try {
-				game = new Game(w);
 				Game.gamemode = 3; //Hard mode
-				game.start();
 				active = false;
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block

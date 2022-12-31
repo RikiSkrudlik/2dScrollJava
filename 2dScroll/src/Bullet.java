@@ -28,7 +28,7 @@ public class Bullet {
 		
 		gr.drawImage(img, x, y, WIDTH, HEIGHT, null);
 		gr.setColor(Color.ORANGE);
-		gr.drawRect(x, y, WIDTH-15, HEIGHT -15);
+		//gr.drawRect(x, y, WIDTH-15, HEIGHT -15);
 		getBounds();
 	}
 	
