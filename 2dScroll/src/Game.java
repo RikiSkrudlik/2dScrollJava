@@ -123,7 +123,7 @@ public class Game extends Thread implements KeyListener{
 	
 	void createEnemies(int gamemode) {
 		
-		enemyCount = 4*gamemode;
+		enemyCount = 3*gamemode;
 		
 		for (int i = 0; i < enemyCount/2; i++) { //Init enemies1
 			addEnemy(new Enemy1(600 + rand.nextInt(window.WIDTH), 
@@ -131,7 +131,7 @@ public class Game extends Thread implements KeyListener{
 		}
 		for (int j = 0; j < enemyCount/2; j++) { //Init and create enemies2
 			addEnemy(new Enemy2(600 + rand.nextInt(window.WIDTH), 
-					rand.nextInt(window.HEIGHT), rand.nextInt(2,4)));
+					rand.nextInt(Enemy.HEIGHT, window.HEIGHT - Enemy.HEIGHT), rand.nextInt(2,4)));
 		}
 	}
 	
@@ -264,6 +264,15 @@ public class Game extends Thread implements KeyListener{
 	
 	void checkCollisions() {
 		
+		/*
+		 * In this function we check using the getBounds function we created
+		 * to check the possible collisions, we store the indexes of the enemies 
+		 * affected and then we erase them, we do it in another loop to have 
+		 * no problems with out of bounds indexes
+		 */
+		
+		ArrayList<Enemy> enemiesRemoved = new ArrayList<Enemy>(); //Dinamic Array
+		
 		for (int i = 0; i < enemies.size(); i++) {
 			if (player.getBounds().intersects(enemies.get(i).getBounds()) ) { //Checks intersections with rectangles
 				removeEnemy(enemies.get(i));
@@ -271,7 +280,8 @@ public class Game extends Thread implements KeyListener{
 			}
 			for (int j = 0; j < bullets.size(); j++) { 
 				if (bullets.get(j).getBounds().intersects(enemies.get(i).getBounds())) { //Checks intersections with rectangles
-					removeEnemy(enemies.get(i));
+					//removeEnemy(enemies.get(i));
+					enemiesRemoved.add(enemies.get(i));
 					removeBullet(bullets.get(j));
 					extra += 100; //Get 100 extra points
 
@@ -282,6 +292,9 @@ public class Game extends Thread implements KeyListener{
 					lifeCount -= 1;
 					removeEnemyBullet(enemyBullets.get(j));
 				}
+			}
+			for (int j = 0; j < enemiesRemoved.size(); j++) {
+				removeEnemy(enemiesRemoved.get(j));
 			}
 		}
 	}
@@ -390,7 +403,7 @@ public class Game extends Thread implements KeyListener{
 			long timeNow = System.currentTimeMillis();
 			long time = timeNow - lastBullet;
 			
-			if (time < 0 || time > 500) { //Max of 1 shot per second
+			if (time < 0 || time > 900) { //Max of 1 shot per second
 			    lastBullet = timeNow;
 			    bullets.add(new Bullet(20 + player.x, 20 + player.y));
 			    try {
