@@ -86,7 +86,7 @@ public class gameOver extends Thread implements KeyListener{
 
 		gr.setColor(Color.YELLOW);
 		gr.drawString("YOU LOST... ", 120 , 350);
-		gr.drawString("TO PLAY AGAIN SELECT DIFFICULTY (1, 2, 3)", 120 , 450);
+		gr.drawString("PLAY AGAIN (1, 2, 3)", 120 , 450);
 		gr.drawString("TO SEE RECORDS PRESS 9", 120 , 550);
 
 

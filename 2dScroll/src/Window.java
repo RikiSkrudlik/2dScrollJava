@@ -9,8 +9,8 @@ public class Window extends Frame implements WindowListener{
 	Image im;
 	Graphics gr;
 
-	int HEIGHT = 800;
-	int WIDTH = 800;
+	static int HEIGHT = 800;
+	static int WIDTH = 800;
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

@@ -17,6 +17,7 @@ public class Menu extends Thread implements KeyListener{
 	Graphics gr;
 	static Image img;
 	static Game game;
+	//static storyScreen storyscreen = new storyScreen(w);
 	static boolean active = true;
 	static Sound sound;
 	int counter = 0;
@@ -145,7 +146,8 @@ public class Menu extends Thread implements KeyListener{
 				game = new Game(w);
 				active = false;
 				w.removeKeyListener(this);
-				game.start();
+				storyScreen storyScreen = new storyScreen(w);
+				storyScreen.start();
 				Game.gamemode = 1; //Easy mode
 			} 
 			catch (Exception e1) {
@@ -158,7 +160,8 @@ public class Menu extends Thread implements KeyListener{
 			try {
 				game = new Game(w);
 				active = false;
-				game.start();
+				storyScreen storyScreen = new storyScreen(w);
+				storyScreen.start();
 				Game.gamemode = 2; //Medium	
 				w.removeKeyListener(this);
 			} catch (Exception e1) {
@@ -171,7 +174,8 @@ public class Menu extends Thread implements KeyListener{
 			try {
 				game = new Game(w);
 				Game.gamemode = 3; //Hard mode
-				game.start();
+				storyScreen storyScreen = new storyScreen(w);
+				storyScreen.start();
 				active = false;
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block

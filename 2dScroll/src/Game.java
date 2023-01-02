@@ -20,7 +20,7 @@ public class Game extends Thread implements KeyListener{
 	static Graphics graphics;
 	static BufferedImage img;
 	static Menu menu;
-	static Boolean playing = true; //Know if you are currently playing
+	static Boolean playing = true, playerHit = false; //Know if you are currently playing
 	static int gamemode, x = 0, y; //3 difficulty gamemodes
 	static double dx = 1, dy = 0.1;
 	int enemyCount;
@@ -28,7 +28,6 @@ public class Game extends Thread implements KeyListener{
 	int lifeCount = 3;
 	long initialTime = System.currentTimeMillis();
 	static long counter, extra;
-	
 	static Ship player;
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>(); //Dinamic Array
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>(); //Dinamic Array
@@ -42,6 +41,8 @@ public class Game extends Thread implements KeyListener{
 		window.addKeyListener(this);
 		window.setFocusable(true);
 	}
+
+	BufferedImage hitScreen = new BufferedImage(Window.WIDTH, Window.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 	
 	public void run() {
 		//Initialize screen objects
@@ -78,7 +79,12 @@ public class Game extends Thread implements KeyListener{
 						
 			repaintScreen(); //Repaint screen
 			moveObjects(); //Move screen objects
-			checkCollisions();//Detect collisions
+			try {
+				checkCollisions();
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}//Detect collisions
 			enemiesAttack();
 			checkDeath();
 			checkBounds();
@@ -101,6 +107,9 @@ public class Game extends Thread implements KeyListener{
 			Bullet.img = ImageIO.read(new File("res/Bullet.png"));
 			BulletEnemy.img = ImageIO.read(new File("res/BulletEnemy.png"));
 			Game.img = ImageIO.read(new File("res/Background.png"));
+			Graphics g = hitScreen.getGraphics();
+			g.setColor(new Color(255, 0, 0, 50)); //Red color with 50% alpha
+			g.fillRect(0, 0, hitScreen.getWidth(), hitScreen.getHeight());
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -213,6 +222,11 @@ public class Game extends Thread implements KeyListener{
 		graphics.setColor(Color.YELLOW);
 		graphics.drawString("Life: " + lifeCount, 60 , 60);
 		graphics.drawString("Score: " + counter, 560 , 60);
+		
+		if (playerHit) {
+			  graphics.drawImage(hitScreen, 0, 0, null); //Draw hitScreen over the top of the game screen
+			  playerHit = false;
+		}
 
 		
 		x += dx;
@@ -220,7 +234,7 @@ public class Game extends Thread implements KeyListener{
 				
 		if (x > img.getWidth()) {
 	        x = 0;
-	        System.out.println("Retornant..");
+	        //System.out.println("Retornant..");
 	    }
 
 		player.paint(graphics);
@@ -262,7 +276,7 @@ public class Game extends Thread implements KeyListener{
 		}
 	}
 	
-	void checkCollisions() {
+	void checkCollisions() throws LineUnavailableException {
 		
 		/*
 		 * In this function we check using the getBounds function we created
@@ -276,6 +290,8 @@ public class Game extends Thread implements KeyListener{
 		for (int i = 0; i < enemies.size(); i++) {
 			if (player.getBounds().intersects(enemies.get(i).getBounds()) ) { //Checks intersections with rectangles
 				removeEnemy(enemies.get(i));
+				playSE(5);
+				playerHit = true;
 				lifeCount -= 1;
 			}
 			for (int j = 0; j < bullets.size(); j++) { 
@@ -290,6 +306,8 @@ public class Game extends Thread implements KeyListener{
 			for (int j = 0; j < enemyBullets.size(); j++) { 
 				if (enemyBullets.get(j).getBounds().intersects(player.getBounds())) {
 					lifeCount -= 1;
+					playSE(5);
+					playerHit = true;
 					removeEnemyBullet(enemyBullets.get(j));
 				}
 			}
@@ -341,14 +359,14 @@ public class Game extends Thread implements KeyListener{
 	public void checkBulletBounds(Bullet b) { //If bullet leaves the screen then destroy!
 		if (b.x > window.WIDTH) {
 			removeBullet(b);
-			System.out.println("bala fora");
+			//System.out.println("bala fora");
 		}
 	}
 	
 	public void checkEnemyBulletBounds(BulletEnemy b) { //If bullet leaves the screen then destroy!
 		if (b.x > window.WIDTH) {
 			removeEnemyBullet(b);
-			System.out.println("bala enemiga fora");
+			//System.out.println("bala enemiga fora");
 		}
 	}
 	
