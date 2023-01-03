@@ -55,8 +55,6 @@ public class storyScreen extends Thread implements KeyListener{
 				
 			}
 			//stopMusic();
-			game = new Game(w);
-			game.start();
 			w.removeKeyListener(this);
 			
 					
@@ -77,20 +75,25 @@ public class storyScreen extends Thread implements KeyListener{
 		public void repaintScreen() { //Paint Menu elements
 			
 			gr.setColor(Color.BLACK);
-			gr.drawImage(img, 0, 0, w.WIDTH, w.HEIGHT, null);
+			gr.drawImage(img, 0, 0, Window.WIDTH, Window.HEIGHT, null);
 			//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
 			gr.setColor(Color.DARK_GRAY);
-			gr.drawString("YOU ARE A PILOT IN THE 365 SAGITARIUS ", 120 , 255);
-			gr.drawString("DEFENSE FLEET, THE MOTHERSHIP HAS", 120 , 355);
-			gr.drawString("BEEN SERIOUSLY DAMAGED AND YOU HAVE", 120 , 455);
-			gr.drawString("BEEN REQUESTED TO PROTECT IT WHILE", 120 , 555);
-			gr.drawString("     THE ENGINEERS FIX IT ", 120 , 655);
+			gr.drawString("YOU ARE A PILOT IN THE 365 ", 65 , 155);
+			gr.drawString("SAGITARIUS DEFENSE FLEET", 65 , 255);
+			gr.drawString("THE MOTHERSHIP HAS BEEN", 65 , 355);
+			gr.drawString("SERIOUSLY DAMAGED AND YOU", 65 , 455);
+			gr.drawString("BEEN REQUESTED TO PROTECT IT", 65 , 555);
+			gr.drawString("WHILE THE ENGINEERS FIX IT", 65, 655);
 
 			gr.setColor(Color.YELLOW);
-			gr.drawString("YOU LOST... ", 120 , 350);
-			gr.drawString("PLAY AGAIN (1, 2, 3)", 120 , 450);
-			gr.drawString("TO SEE RECORDS PRESS 9", 120 , 550);
-
+			
+			gr.drawString("YOU ARE A PILOT IN THE 365 ", 70 , 150);
+			gr.drawString("SAGITARIUS DEFENSE FLEET", 70, 250);
+			gr.drawString("THE MOTHERSHIP HAS BEEN", 70, 350);
+			gr.drawString("SERIOUSLY DAMAGED AND YOU", 70, 450);
+			gr.drawString("BEEN REQUESTED TO PROTECT IT", 70 , 550);
+			gr.drawString("WHILE THE ENGINEERS FIX IT", 70, 650);
+			
 
 			
 		}
@@ -99,7 +102,7 @@ public class storyScreen extends Thread implements KeyListener{
 			
 			try {
 
-				gameOver.img = ImageIO.read(new File("res/BackgroundBlurr.png"));
+				storyScreen.img = ImageIO.read(new File("res/BackgroundBlurr.png"));
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -145,7 +148,6 @@ public class storyScreen extends Thread implements KeyListener{
 			int key = e.getKeyCode();
 			if (key == KeyEvent.VK_P) {
 				try {
-					counter += 1;
 					game = new Game(w);
 					active = false;
 					w.removeKeyListener(this);

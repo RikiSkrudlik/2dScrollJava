@@ -16,7 +16,6 @@ public class Menu extends Thread implements KeyListener{
 	Window w;
 	Graphics gr;
 	static Image img;
-	static Game game;
 	//static storyScreen storyscreen = new storyScreen(w);
 	static boolean active = true;
 	static Sound sound;
@@ -49,12 +48,13 @@ public class Menu extends Thread implements KeyListener{
 			}
 			//System.out.println("Eee funcionant + " +active);
 			repaintScreen();
-			w.repaint();
+			System.out.println("ei!");
 			
 		}
 		//stopMusic();
+		active = false;
 		
-		w.removeKeyListener(this);
+		//w.removeKeyListener(this);
 				
 	}
 	
@@ -116,7 +116,7 @@ public class Menu extends Thread implements KeyListener{
 	public void repaintScreen() { //Paint Menu elements
 		
 		gr.setColor(Color.BLACK);
-		gr.drawImage(img, 0, 0, w.WIDTH, w.HEIGHT, null);
+		gr.drawImage(img, 0, 0, Window.WIDTH, Window.HEIGHT, null);
 		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
 		gr.setColor(Color.DARK_GRAY);
 		gr.drawString("EASY MODE (PRESS 1) ", 115 , 455);
@@ -126,6 +126,7 @@ public class Menu extends Thread implements KeyListener{
 		gr.drawString("EASY MODE (PRESS 1) ", 120 , 450);
 		gr.drawString("NORMAL MODE (PRESS 2) ", 120 , 550);
 		gr.drawString("HARD MODE (PRESS 3) ", 120 , 650);
+		w.repaint();
 
 		
 	}
@@ -142,11 +143,9 @@ public class Menu extends Thread implements KeyListener{
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_1) {
 			try {
-				counter += 1;
-				game = new Game(w);
+				storyScreen storyScreen = new storyScreen(w);
 				active = false;
 				w.removeKeyListener(this);
-				storyScreen storyScreen = new storyScreen(w);
 				storyScreen.start();
 				Game.gamemode = 1; //Easy mode
 			} 
@@ -158,7 +157,6 @@ public class Menu extends Thread implements KeyListener{
 			}
 		else if (key == KeyEvent.VK_2) { 
 			try {
-				game = new Game(w);
 				active = false;
 				storyScreen storyScreen = new storyScreen(w);
 				storyScreen.start();
@@ -172,7 +170,7 @@ public class Menu extends Thread implements KeyListener{
 		}
 		else if (key == KeyEvent.VK_3) { 
 			try {
-				game = new Game(w);
+
 				Game.gamemode = 3; //Hard mode
 				storyScreen storyScreen = new storyScreen(w);
 				storyScreen.start();

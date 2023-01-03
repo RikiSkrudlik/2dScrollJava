@@ -19,7 +19,6 @@ public class gameOver extends Thread implements KeyListener{
 	static Game game;
 	static boolean active = true;
 	static Sound sound;
-	int counter = 0;
 
 	public gameOver(Window w) {
 
@@ -50,13 +49,10 @@ public class gameOver extends Thread implements KeyListener{
 			}
 			System.out.println("Eee funcionant + " +active);
 			repaintScreen();
-			w.repaint();
 			
 			
 		}
 		//stopMusic();
-		game = new Game(w);
-		game.start();
 		w.removeKeyListener(this);
 		
 				
@@ -77,7 +73,7 @@ public class gameOver extends Thread implements KeyListener{
 	public void repaintScreen() { //Paint Menu elements
 		
 		gr.setColor(Color.BLACK);
-		gr.drawImage(img, 0, 0, w.WIDTH, w.HEIGHT, null);
+		gr.drawImage(img, 0, 0, Window.WIDTH, Window.HEIGHT, null);
 		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
 		gr.setColor(Color.DARK_GRAY);
 		gr.drawString("YOU LOST... ", 115 , 355);
@@ -88,6 +84,8 @@ public class gameOver extends Thread implements KeyListener{
 		gr.drawString("YOU LOST... ", 120 , 350);
 		gr.drawString("PLAY AGAIN (1, 2, 3)", 120 , 450);
 		gr.drawString("TO SEE RECORDS PRESS 9", 120 , 550);
+		
+		w.repaint();
 
 
 		
@@ -126,7 +124,7 @@ public class gameOver extends Thread implements KeyListener{
 		
 		sound.setFile(i);
 		sound.play();
-		sound.loop();
+		//sound.loop();
 	}
 	
 	public void stopMusic() {
@@ -144,12 +142,13 @@ public class gameOver extends Thread implements KeyListener{
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_1) {
 			try {
-				counter += 1;
 				game = new Game(w);
 				active = false;
 				w.removeKeyListener(this);
 				game.start();
+				Game.playing = true;
 				Game.gamemode = 1; //Easy mode
+				stopMusic();
 			} 
 			catch (Exception e1) {
 				// TODO Auto-generated catch block
@@ -161,9 +160,11 @@ public class gameOver extends Thread implements KeyListener{
 			try {
 				game = new Game(w);
 				active = false;
-				game.start();
-				Game.gamemode = 2; //Medium	
 				w.removeKeyListener(this);
+				game.start();
+				Game.playing = true;
+				Game.gamemode = 2; //Easy mode
+				stopMusic();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -172,8 +173,13 @@ public class gameOver extends Thread implements KeyListener{
 		}
 		else if (key == KeyEvent.VK_3) { 
 			try {
-				Game.gamemode = 3; //Hard mode
+				game = new Game(w);
 				active = false;
+				w.removeKeyListener(this);
+				game.start();
+				Game.playing = true;
+				Game.gamemode = 3; //Easy mode
+				stopMusic();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
