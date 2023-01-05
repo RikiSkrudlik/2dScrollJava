@@ -53,8 +53,7 @@ public class gameOver extends Thread implements KeyListener{
 			
 		}
 		//stopMusic();
-		w.removeKeyListener(this);
-		
+		w.removeKeyListener(this);		
 				
 	}
 	
@@ -87,8 +86,6 @@ public class gameOver extends Thread implements KeyListener{
 		
 		w.repaint();
 
-
-		
 	}
 	
 	public void initImages() {

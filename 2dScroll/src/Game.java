@@ -18,10 +18,12 @@ public class Game extends Thread implements KeyListener{
 	
 	static Window window;
 	static Graphics graphics;
-	static BufferedImage img;
+	BufferedImage img, img2;
+	int backgroundWidth, backgroundHeight;
 	static Menu menu;
 	static Boolean playing = true, playerHit = false; //Know if you are currently playing
-	static int gamemode, x = 0, y; //3 difficulty gamemodes
+	static int gamemode; 
+	int x = 0, y = 0; //3 difficulty gamemodes
 	static double dx = 1, dy = 0.1;
 	int enemyCount;
 	static Sound sound;
@@ -106,10 +108,13 @@ public class Game extends Thread implements KeyListener{
 			Enemy2.img = ImageIO.read(new File("res/Enemy2.png"));
 			Bullet.img = ImageIO.read(new File("res/Bullet.png"));
 			BulletEnemy.img = ImageIO.read(new File("res/BulletEnemy.png"));
-			Game.img = ImageIO.read(new File("res/Background.png"));
+			img = ImageIO.read(new File("res/Background.png"));
+			img2 = ImageIO.read(new File("res/Background.png"));
 			Graphics g = hitScreen.getGraphics();
 			g.setColor(new Color(255, 0, 0, 50)); //Red color with 50% alpha
 			g.fillRect(0, 0, hitScreen.getWidth(), hitScreen.getHeight());
+			backgroundWidth = Window.WIDTH;
+			backgroundHeight = Window.HEIGHT;
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -216,8 +221,16 @@ public class Game extends Thread implements KeyListener{
 	
 	void repaintScreen() { //Draw new line and repaint screen
 		
-		graphics.setColor(Color.BLACK);
-		graphics.drawImage(img, 0, 0, window.WIDTH, window.HEIGHT, null);
+		x -= 1;
+		
+		if (x + backgroundWidth < 0) {
+			x = backgroundWidth;
+			System.out.println("im in");
+		}
+		
+		graphics.drawImage(img2, x + Window.WIDTH, y, backgroundWidth + Window.WIDTH, 
+				backgroundHeight, null);
+		graphics.drawImage(img, x, y, backgroundWidth, backgroundHeight, null);
 		//graphics.drawImage(img, -img.getWidth() + x, 0, window.WIDTH, window.HEIGHT, null);
 		graphics.setColor(Color.YELLOW);
 		graphics.drawString("Life: " + lifeCount, 60 , 60);
@@ -228,14 +241,6 @@ public class Game extends Thread implements KeyListener{
 			  playerHit = false;
 		}
 
-		
-		x += dx;
-		y += dy;
-				
-		if (x > img.getWidth()) {
-	        x = 0;
-	        //System.out.println("Retornant..");
-	    }
 
 		player.paint(graphics);
 		
