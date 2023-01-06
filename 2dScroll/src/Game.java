@@ -80,16 +80,16 @@ public class Game extends Thread implements KeyListener{
 			counter = (timeNow - initialTime)/100 + extra;
 						
 			repaintScreen(); //Repaint screen
-			moveObjects(); //Move screen objects
 			try {
 				checkCollisions();
 			} catch (LineUnavailableException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}//Detect collisions
-			enemiesAttack();
 			checkDeath();
 			checkBounds();
+			enemiesAttack();
+			moveObjects(); //Move screen objects
 			
 			
 			try {
@@ -113,7 +113,7 @@ public class Game extends Thread implements KeyListener{
 			Graphics g = hitScreen.getGraphics();
 			g.setColor(new Color(255, 0, 0, 50)); //Red color with 50% alpha
 			g.fillRect(0, 0, hitScreen.getWidth(), hitScreen.getHeight());
-			backgroundWidth = Window.WIDTH;
+			backgroundWidth = 2*Window.WIDTH;
 			backgroundHeight = Window.HEIGHT;
 			
 		} catch (IOException e) {
@@ -223,14 +223,13 @@ public class Game extends Thread implements KeyListener{
 		
 		x -= 1;
 		
-		if (x + backgroundWidth < 0) {
-			x = backgroundWidth;
-			System.out.println("im in");
+		if (x + backgroundWidth*0.5 < 0) {
+			x = 0;
 		}
 		
-		graphics.drawImage(img2, x + Window.WIDTH, y, backgroundWidth + Window.WIDTH, 
-				backgroundHeight, null);
 		graphics.drawImage(img, x, y, backgroundWidth, backgroundHeight, null);
+//		graphics.drawImage(img2, x + Window.WIDTH, y, backgroundWidth + Window.WIDTH, 
+//				backgroundHeight, null);
 		//graphics.drawImage(img, -img.getWidth() + x, 0, window.WIDTH, window.HEIGHT, null);
 		graphics.setColor(Color.YELLOW);
 		graphics.drawString("Life: " + lifeCount, 60 , 60);
@@ -429,12 +428,12 @@ public class Game extends Thread implements KeyListener{
 			if (time < 0 || time > 900) { //Max of 1 shot per second
 			    lastBullet = timeNow;
 			    bullets.add(new Bullet(20 + player.x, 20 + player.y));
-			    try {
-					playSE(4);
-				} catch (LineUnavailableException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+//			    try {
+//					playSE(4);
+//				} catch (LineUnavailableException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
 			}
 			
 		}
