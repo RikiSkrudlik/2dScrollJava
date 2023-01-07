@@ -86,8 +86,8 @@ public class Game extends Thread implements KeyListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}//Detect collisions
-			checkDeath();
 			checkBounds();
+			checkDeath();
 			enemiesAttack();
 			repaintScreen(); //Repaint screen
 			moveObjects(); //Move screen objects
@@ -140,7 +140,7 @@ public class Game extends Thread implements KeyListener{
 	
 	void createEnemies(int gamemode) {
 		
-		enemyCount = 3*gamemode; //The amount of enemies displayed (difficulty)
+		enemyCount = 3*gamemode; //Theamount of enemies displayed (difficulty)
 		
 		for (int i = 0; i < enemyCount/2; i++) { //Init enemies1
 			addEnemy(new Enemy1(600 + rand.nextInt(Window.WIDTH), 
