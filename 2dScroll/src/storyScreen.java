@@ -55,7 +55,7 @@ public class storyScreen extends Thread implements KeyListener{
 				
 			}
 			//stopMusic();
-			w.removeKeyListener(this);
+
 			
 					
 		}
@@ -125,16 +125,16 @@ public class storyScreen extends Thread implements KeyListener{
 			
 		}
 		
-		public void playMusic(int i) throws LineUnavailableException {
-			
-			sound.setFile(i);
-			sound.play();
-			sound.loop();
-		}
-		
-		public void stopMusic() {
-			sound.stop();
-		}
+//		public void playMusic(int i) throws LineUnavailableException {
+//			
+//			sound.setFile(i);
+//			sound.play();
+//			sound.loop();
+//		}
+//		
+//		public void stopMusic() {
+//			sound.stop();
+//		}
 
 		@Override
 		public void keyTyped(KeyEvent e) {

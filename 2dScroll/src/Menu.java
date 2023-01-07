@@ -175,6 +175,8 @@ public class Menu extends Thread implements KeyListener{
 				storyScreen storyScreen = new storyScreen(w);
 				storyScreen.start();
 				active = false;
+				w.removeKeyListener(this);
+
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

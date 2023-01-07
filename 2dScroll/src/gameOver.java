@@ -47,12 +47,12 @@ public class gameOver extends Thread implements KeyListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Eee funcionant + " +active);
 			repaintScreen();
 			
 			
 		}
 		//stopMusic();
+		//Game.initialTime = 0; //To reset the score counter
 		w.removeKeyListener(this);		
 				
 	}
