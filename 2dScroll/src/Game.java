@@ -18,19 +18,22 @@ public class Game extends Thread implements KeyListener{
 	
 	static Window window;
 	static Graphics graphics;
-	BufferedImage img, img2;
-	int backgroundWidth, backgroundHeight;
 	static Menu menu;
+	
+	BufferedImage img, img2;
+	BufferedImage hitScreen = new BufferedImage(Window.WIDTH, Window.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+
+	int backgroundWidth, backgroundHeight;
 	static Boolean playing = true, playerHit = false; //Know if you are currently playing
-	static int gamemode; 
-	int x = 0, y = 0, x2 = Window.WIDTH; //3 difficulty gamemodes
-	static double dx = 1, dy = 0.1;
+	static int gamemode, fadeCounter = 0; 
+	int x = 0, y = 0, x2 = Window.WIDTH; //For the background scrolling
 	int enemyCount;
 	static Sound sound;
 	int lifeCount = 3;
-	static long initialTime;
-	static long counter, extra, scoreDeath;
+	static long counter, extra, scoreDeath, initialTime;
 	static Ship player;
+	static extraLife vida = new extraLife(1000, 300);;
+	//Various arrays for enemies bullets...
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>(); //Dinamic Array
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>(); //Dinamic Array
 	static ArrayList<BulletEnemy> enemyBullets = new ArrayList<BulletEnemy>(); //Dinamic Array
@@ -43,12 +46,9 @@ public class Game extends Thread implements KeyListener{
 		window.addKeyListener(this);
 		window.setFocusable(true);
 	}
-
-	BufferedImage hitScreen = new BufferedImage(Window.WIDTH, Window.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 	
 	public void run() {
 		//Initialize screen objects
-		//y = 50;
 		
 		player = new Ship(50, 50); //Init player
 		initialTime = System.currentTimeMillis();
@@ -68,6 +68,9 @@ public class Game extends Thread implements KeyListener{
 			
 			//We will be creating enemies every x seconds in random positions
 			//In front of the player
+			
+	        //drawFadeBlackScreen();
+
 			
 			long timeNow = System.currentTimeMillis();
 			long time = timeNow - timeStart;
@@ -113,6 +116,7 @@ public class Game extends Thread implements KeyListener{
 			BulletEnemy.img = ImageIO.read(new File("res/BulletEnemy.png"));
 			img = ImageIO.read(new File("res/Background800.png"));
 			img2 = ImageIO.read(new File("res/Background800.png"));
+			extraLife.img = ImageIO.read(new File("res/extraLife.png"));
 			Graphics g = hitScreen.getGraphics();
 			g.setColor(new Color(255, 0, 0, 50)); //Red color with 50% alpha, for the hit animation
 			g.fillRect(0, 0, hitScreen.getWidth(), hitScreen.getHeight());
@@ -180,6 +184,7 @@ public class Game extends Thread implements KeyListener{
 		//y++;
 		player.checkBorder();
 		player.move();
+		vida.move();
 		
 		for (int i = 0; i < enemies.size(); i++) {
 			enemies.get(i).move();
@@ -229,8 +234,8 @@ public class Game extends Thread implements KeyListener{
 		graphics.drawImage(img, x, y, backgroundWidth, backgroundHeight, null);
 		graphics.drawImage(img, x2, y, backgroundWidth, backgroundHeight, null);
 		
-		x -= 1;
-		x2 -= 1;
+		x -= 2;
+		x2 -= 2;
 		
 		if (x < -Window.WIDTH) {
 			x = backgroundWidth;
@@ -249,6 +254,7 @@ public class Game extends Thread implements KeyListener{
 		graphics.drawString("Score: " + counter, 560 , 60);
 
 		player.paint(graphics);
+		vida.paint(graphics);
 		
 		for (int i = 0; i < enemies.size(); i++) { //Paint enemies
 			enemies.get(i).paint(graphics); 
@@ -316,7 +322,7 @@ public class Game extends Thread implements KeyListener{
 			for (int j = 0; j < enemyBullets.size(); j++) { 
 				if (enemyBullets.get(j).getBounds().intersects(player.getBounds())) {
 					lifeCount -= 1;
-					//playSE(5);
+					playSE(5);
 					playerHit = true;
 					removeEnemyBullet(enemyBullets.get(j));
 				}
@@ -325,14 +331,19 @@ public class Game extends Thread implements KeyListener{
 				removeEnemy(enemiesRemoved.get(j));
 			}
 		}
+		//Check contact with extralife
+		if (vida.getBounds().intersects(player.getBounds())) { //Checks intersections with rectangles);
+			
+			//lifeHit = true;
+			lifeCount += 1;
+			//vida = null;
+		}
+		
 	}
 	
 	
 	
-	
-	
-	
-	
+
 	
 	
 	/*
@@ -398,6 +409,7 @@ public class Game extends Thread implements KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
+	long lastBullet = initialTime;
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -425,21 +437,22 @@ public class Game extends Thread implements KeyListener{
 		else if (key == KeyEvent.VK_S) { //Down
 			player.vy = Ship.speedy;
 		}
+		
 		else if (key == KeyEvent.VK_L) { //Player shooting
 			
-			long lastBullet = initialTime;
 			long timeNow = System.currentTimeMillis();
 			long time = timeNow - lastBullet;
+			System.out.println(""+time);
 			
-			if (time < 0 || time > 900) { //Max of 1 shot per second
+			if (time < 0 || time > 300) { //Max of 1 shot per second
 			    lastBullet = timeNow;
 			    bullets.add(new Bullet(20 + player.x, 20 + player.y));
-//			    try {
-//					playSE(4);
-//				} catch (LineUnavailableException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
+			    try {
+					playSE(4);
+				} catch (LineUnavailableException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 		}

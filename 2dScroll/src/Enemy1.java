@@ -4,11 +4,7 @@ public class Enemy1 extends Enemy{
 	
 	int WIDTH = 160;
 	int HEIGHT = 120;
-	
-	long lastMove = System.currentTimeMillis();
-
-	int correction = 1;
-	
+		
 	Enemy1(int x, int y, int v) {
 		super(x, y, v);
 		// TODO Auto-generated constructor stub
