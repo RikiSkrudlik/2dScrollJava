@@ -24,7 +24,7 @@ public class Game extends Thread implements KeyListener{
 	BufferedImage hitScreen = new BufferedImage(Window.WIDTH, Window.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
 	int backgroundWidth, backgroundHeight;
-	static Boolean playing = true, playerHit = false; //Know if you are currently playing
+	static Boolean playing = true, playerHit = false, lifeHit = false; //Know if you are currently playing
 	static int gamemode, fadeCounter = 0; 
 	int x = 0, y = 0, x2 = Window.WIDTH; //For the background scrolling
 	int enemyCount;
@@ -32,7 +32,7 @@ public class Game extends Thread implements KeyListener{
 	int lifeCount = 3;
 	static long counter, extra, scoreDeath, initialTime;
 	static Ship player;
-	static extraLife vida = new extraLife(1000, 300);;
+	static extraLife life;
 	//Various arrays for enemies bullets...
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>(); //Dinamic Array
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>(); //Dinamic Array
@@ -50,8 +50,13 @@ public class Game extends Thread implements KeyListener{
 	public void run() {
 		//Initialize screen objects
 		
-		player = new Ship(50, 50); //Init player
 		initialTime = System.currentTimeMillis();
+		try {
+			initMultiple();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		initImages(); //Initialize images sprites for the game
 		initFont();
 		
@@ -94,6 +99,9 @@ public class Game extends Thread implements KeyListener{
 			enemiesAttack();
 			repaintScreen(); //Repaint screen
 			moveObjects(); //Move screen objects
+			if (life == null) { //if there isn't a life created (so it doesn't erase the last one)
+				createLife();
+			}
 			
 			
 			try {
@@ -117,9 +125,6 @@ public class Game extends Thread implements KeyListener{
 			img = ImageIO.read(new File("res/Background800.png"));
 			img2 = ImageIO.read(new File("res/Background800.png"));
 			extraLife.img = ImageIO.read(new File("res/extraLife.png"));
-			Graphics g = hitScreen.getGraphics();
-			g.setColor(new Color(255, 0, 0, 50)); //Red color with 50% alpha, for the hit animation
-			g.fillRect(0, 0, hitScreen.getWidth(), hitScreen.getHeight());
 			backgroundWidth = Window.WIDTH;
 			backgroundHeight = Window.HEIGHT;
 			
@@ -127,6 +132,13 @@ public class Game extends Thread implements KeyListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	void initMultiple() throws IOException {
+		
+		player = new Ship(50, 50); //Init player
+		player.initTurbo();
+		
 	}
 	
 	void initFont() {
@@ -142,20 +154,6 @@ public class Game extends Thread implements KeyListener{
 		}
 	}
 	
-	void createEnemies(int gamemode) {
-		
-		enemyCount = 3*gamemode; //Theamount of enemies displayed (difficulty)
-		
-		for (int i = 0; i < enemyCount/2; i++) { //Init enemies1
-			addEnemy(new Enemy1(600 + rand.nextInt(Window.WIDTH), 
-					rand.nextInt(Window.HEIGHT), rand.nextInt(5,8)));
-		}
-		for (int j = 0; j < enemyCount/2; j++) { //Init and create enemies2
-			addEnemy(new Enemy2(600 + rand.nextInt(Window.WIDTH), 
-					rand.nextInt(Enemy.HEIGHT, Window.HEIGHT - Enemy.HEIGHT), rand.nextInt(2,4)));
-		}
-	}
-	
 	void initSounds() throws LineUnavailableException {
 		
 		sound = new Sound();
@@ -163,28 +161,54 @@ public class Game extends Thread implements KeyListener{
 
 	}
 	
-	public void playMusic(int i) throws LineUnavailableException {
+	void createLife() {
 		
-		sound.setFile(i);
-		sound.play();
-		sound.loop();
-	}
-	
-	public void stopMusic() {
-		sound.stop();
-	}
-	
-	public void playSE(int i) throws LineUnavailableException {
+		long timeNow = System.currentTimeMillis();
+		long time = timeNow - lastAttack;
 		
-		sound.setFile(i);
-		sound.play();
+		int max = 9;
+		int min = 2;
+		
+		int randomizer = (int)(Math.random()*(max-min+1)+min); 
+		
+		if (time < 0 || time > 15000/randomizer) { //Enemy shooting is random
+		    lastAttack = timeNow;
+
+			int randomizer2 = (int)(Math.random()*(4)+1); 
+
+				//We create a random 1/4 chance for the specific enemy to shoot
+				
+			if (randomizer2 == 3) { 
+					
+				life = new extraLife(600 + rand.nextInt(Window.WIDTH), 
+					rand.nextInt(Window.HEIGHT - extraLife.HEIGHT));
+					
+				}
+		    }
+	}
+		
+	
+	void createEnemies(int gamemode) {
+		
+		enemyCount = 3*gamemode; //Theamount of enemies displayed (difficulty)
+		
+		for (int i = 0; i < enemyCount/2; i++) { //Init enemies1
+			addEnemy(new Enemy1(Window.WIDTH + rand.nextInt(Window.WIDTH), 
+					rand.nextInt(Window.HEIGHT - Enemy.HEIGHT), rand.nextInt(5,8)));
+		}
+		for (int j = 0; j < enemyCount/2; j++) { //Init and create enemies2
+			addEnemy(new Enemy2(Window.WIDTH + rand.nextInt(Window.WIDTH), 
+					rand.nextInt(Enemy.HEIGHT, Window.HEIGHT - Enemy.HEIGHT), rand.nextInt(4,7)));
+		}
 	}
 	
 	void moveObjects() {
 		//y++;
 		player.checkBorder();
 		player.move();
-		vida.move();
+		if (life != null) {
+			life.move();
+		}
 		
 		for (int i = 0; i < enemies.size(); i++) {
 			enemies.get(i).move();
@@ -244,17 +268,32 @@ public class Game extends Thread implements KeyListener{
 			x2 = Window.WIDTH;
 		}
 		
+		//TOP FOR SCROLLING BACKGROUND ONLY
+		
 		if (playerHit) {
-			  graphics.drawImage(hitScreen, 0, 0, null); //Draw hitScreen over the top of the game screen
-			  playerHit = false;
+			Color red = new Color(255, 0, 0, 50);
+			  // draw a green rectangle over the entire screen
+			 graphics.setColor(red);
+			 graphics.fillRect(0, 0, Window.WIDTH, Window.HEIGHT); //Draw hitScreen over the top of the game screen
+			 playerHit = false;
+		}
+		
+		if (lifeHit) {
+			Color green = new Color(0, 255, 0, 50);
+			  // draw a green rectangle over the entire screen
+			 graphics.setColor(green);
+			 graphics.fillRect(0, 0, Window.WIDTH, Window.HEIGHT);
+			 lifeHit = false;
 		}
 		
 		graphics.setColor(Color.YELLOW);
 		graphics.drawString("Life: " + lifeCount, 60 , 60);
 		graphics.drawString("Score: " + counter, 560 , 60);
-
 		player.paint(graphics);
-		vida.paint(graphics);
+		
+		if (life != null) { //If there isn't a life in the game rn
+			life.paint(graphics);
+		}
 		
 		for (int i = 0; i < enemies.size(); i++) { //Paint enemies
 			enemies.get(i).paint(graphics); 
@@ -277,7 +316,8 @@ public class Game extends Thread implements KeyListener{
 			window.removeKeyListener(this);
 			gameOver.active = true;
 			endScreen.start();
-		}		
+		}	
+
 	}
 	
 	void checkBounds() { //If out of bounds then make disappear
@@ -290,6 +330,7 @@ public class Game extends Thread implements KeyListener{
 		for (int i = 0; i < enemies.size(); i++) {
 			checkEnemyBounds(enemies.get(i));
 		}
+		
 	}
 	
 	void checkCollisions() throws LineUnavailableException {
@@ -332,12 +373,15 @@ public class Game extends Thread implements KeyListener{
 			}
 		}
 		//Check contact with extralife
-		if (vida.getBounds().intersects(player.getBounds())) { //Checks intersections with rectangles);
+		if (life != null && life.getBounds().intersects(player.getBounds())) { //Checks intersections with rectangles);
 			
-			//lifeHit = true;
+			lifeHit = true;
 			lifeCount += 1;
-			//vida = null;
+			playSE(6);
+			life = null;
+
 		}
+		//Not a collision but put it here
 		
 	}
 	
@@ -347,9 +391,26 @@ public class Game extends Thread implements KeyListener{
 	
 	
 	/*
-	 * Check bounds, remove... Events for the playing mechanics.
+	 * Check bounds, remove, music... Events for the playing mechanics.
 	 * 
 	*/
+	
+	public void playMusic(int i) throws LineUnavailableException {
+		
+		sound.setFile(i);
+		sound.play();
+		sound.loop();
+	}
+	
+	public void stopMusic() {
+		sound.stop();
+	}
+	
+	public void playSE(int i) throws LineUnavailableException {
+		
+		sound.setFile(i);
+		sound.play();
+	}
 	
 	
 	
@@ -396,6 +457,12 @@ public class Game extends Thread implements KeyListener{
 			removeEnemy(e);
 			extra -= 100;
 			//System.out.println("Enemy out");
+		}
+	}
+	void checkLifeBounds() {
+		if (life != null && life.x <- extraLife.WIDTH) {
+			life = null;
+			
 		}
 	}
 	

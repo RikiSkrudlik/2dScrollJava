@@ -6,7 +6,9 @@ import java.awt.Rectangle;
 public class extraLife {
 
 	static Image img;
-	int x, y, WIDTH = 40, HEIGHT = 40, speedx = 5; //Position and dimensions
+	static int WIDTH = 40, HEIGHT = 40;
+	int x, y;
+	int speedx = 4;
 	
 	extraLife(int x, int y){
 

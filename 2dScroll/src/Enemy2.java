@@ -23,6 +23,7 @@ public class Enemy2 extends Enemy {
 	void paint(Graphics gr) {
 		
 		gr.drawImage(img, x, y, WIDTH, HEIGHT, null);
+
 		//gr.setColor(Color.ORANGE);
 		//gr.drawRect(x+45, y+40, hitBoxx, hitBoxy);
 
