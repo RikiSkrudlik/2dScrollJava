@@ -23,13 +23,11 @@ public class Game extends Thread implements KeyListener{
 	BufferedImage img, img2;
 	BufferedImage hitScreen = new BufferedImage(Window.WIDTH, Window.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
-	int backgroundWidth, backgroundHeight;
-	static Boolean playing = true, playerHit = false, lifeHit = false; //Know if you are currently playing
-	static int gamemode, fadeCounter = 0; 
-	int x = 0, y = 0, x2 = Window.WIDTH; //For the background scrolling
-	int enemyCount;
+	static Boolean playing = true, playerHit = false, lifeHit = false, ulti = false, activeUlti = false; //Know if you are currently playing
+	static int gamemode, fadeCounter = 0;  //For the background scrolling
+	int enemyCount, enemiesKilled;
 	static Sound sound;
-	int lifeCount = 3;
+	int lifeCount = 3, ultiNumber = 5, x = 0, y = 0, x2 = Window.WIDTH, backgroundWidth, backgroundHeight;; //number of enemies needed for ulti
 	static long counter, extra, scoreDeath, initialTime;
 	static Ship player;
 	static extraLife life;
@@ -45,6 +43,12 @@ public class Game extends Thread implements KeyListener{
 		graphics = w.gr;
 		window.addKeyListener(this);
 		window.setFocusable(true);
+	}
+	
+	public void checkUlti() {//If you killed 15 enemies you allowed to ulti
+		if (enemiesKilled == ultiNumber) {
+			activeUlti = true;
+		}
 	}
 	
 	public void run() {
@@ -94,11 +98,11 @@ public class Game extends Thread implements KeyListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}//Detect collisions
+			moveObjects(); //Move screen objects
 			checkBounds();
 			checkDeath();
 			enemiesAttack();
-			repaintScreen(); //Repaint screen
-			moveObjects(); //Move screen objects
+			checkUlti();
 			if (life == null) { //if there isn't a life created (so it doesn't erase the last one)
 				createLife();
 			}
@@ -110,6 +114,8 @@ public class Game extends Thread implements KeyListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
+			repaintScreen(); //Repaint screen
+
 		}
 		
 		extra = 0;
@@ -171,7 +177,7 @@ public class Game extends Thread implements KeyListener{
 		
 		int randomizer = (int)(Math.random()*(max-min+1)+min); 
 		
-		if (time < 0 || time > 15000/randomizer) { //Enemy shooting is random
+		if (time < 0 || time > 8000/randomizer) { //Enemy shooting is random
 		    lastAttack = timeNow;
 
 			int randomizer2 = (int)(Math.random()*(4)+1); 
@@ -289,6 +295,7 @@ public class Game extends Thread implements KeyListener{
 		graphics.setColor(Color.YELLOW);
 		graphics.drawString("Life: " + lifeCount, 60 , 60);
 		graphics.drawString("Score: " + counter, 560 , 60);
+		graphics.drawString("Enemies: " + enemiesKilled, 260 , 60);
 		player.paint(graphics);
 		
 		if (life != null) { //If there isn't a life in the game rn
@@ -346,7 +353,7 @@ public class Game extends Thread implements KeyListener{
 		
 		for (int i = 0; i < enemies.size(); i++) {
 			if (player.getBounds().intersects(enemies.get(i).getBounds()) ) { //Checks intersections with rectangles
-				removeEnemy(enemies.get(i));
+				enemiesRemoved.add(enemies.get(i));
 				playSE(5);
 				playerHit = true;
 				lifeCount -= 1;
@@ -356,7 +363,8 @@ public class Game extends Thread implements KeyListener{
 					//removeEnemy(enemies.get(i));
 					enemiesRemoved.add(enemies.get(i));
 					removeBullet(bullets.get(j));
-					extra += 100; //Get 100 extra points
+					extra += 100;
+					enemiesKilled += 1; //Get 100 extra points
 
 				}
 			}
@@ -509,7 +517,6 @@ public class Game extends Thread implements KeyListener{
 			
 			long timeNow = System.currentTimeMillis();
 			long time = timeNow - lastBullet;
-			System.out.println(""+time);
 			
 			if (time < 0 || time > 300) { //Max of 1 shot per second
 			    lastBullet = timeNow;
@@ -520,6 +527,34 @@ public class Game extends Thread implements KeyListener{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+			}
+			
+		}
+		
+		else if (key == KeyEvent.VK_U) { //ULTI ACTIVE
+						
+			if (activeUlti == true) { //Max of 1 shot per second
+				
+				ArrayList<Enemy> enemiesRemoved = new ArrayList<Enemy>();
+				
+				for (int i = 0; i < enemies.size(); i++) { //Kill all enemies
+					enemiesRemoved.add(enemies.get(i));
+						extra += 100;
+				}
+				
+				for (int j = 0; j < enemiesRemoved.size(); j++) {
+					removeEnemy(enemiesRemoved.get(j));
+				}
+				
+				try {
+					playSE(7);
+				} catch (LineUnavailableException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				activeUlti = false;
+				Ship.ultiAnimation = true;
+				enemiesKilled = 0;
 			}
 			
 		}

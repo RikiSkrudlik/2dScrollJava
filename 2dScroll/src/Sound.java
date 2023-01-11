@@ -22,6 +22,8 @@ public class Sound {
 			soundURL[4] = getClass().getResource("sound/enemyBullet.wav");
 			soundURL[5] = getClass().getResource("sound/playerHit.wav");
 			soundURL[6] = getClass().getResource("sound/extraLife.wav");
+			soundURL[7] = getClass().getResource("sound/ulti.wav");
+
 	}
 	
 	public void setFile(int i) throws LineUnavailableException {
