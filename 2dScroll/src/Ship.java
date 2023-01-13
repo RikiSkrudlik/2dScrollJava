@@ -87,7 +87,7 @@ public class Ship {
 		getBounds();
 		
 		if (ultiAnimation) {
-			gr.drawImage(ulti[i], 400, 400, 400, 400, null);
+			gr.drawImage(ulti[i], -200, -200, 1000, 1000, null);
 			i++;
 		}
 		

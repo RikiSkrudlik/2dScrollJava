@@ -24,10 +24,10 @@ public class Game extends Thread implements KeyListener{
 	BufferedImage hitScreen = new BufferedImage(Window.WIDTH, Window.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
 	static Boolean playing = true, playerHit = false, lifeHit = false, ulti = false, activeUlti = false; //Know if you are currently playing
-	static int gamemode, fadeCounter = 0;  //For the background scrolling
+	static int gamemode, fadeCounter = 0, intermitent = 4;  //For the background scrolling
 	int enemyCount, enemiesKilled;
 	static Sound sound;
-	int lifeCount = 3, ultiNumber = 5, x = 0, y = 0, x2 = Window.WIDTH, backgroundWidth, backgroundHeight;; //number of enemies needed for ulti
+	int lifeCount = 3, ultiNumber = 16, x = 0, y = 0, x2 = Window.WIDTH, backgroundWidth, backgroundHeight; //number of enemies needed for ulti
 	static long counter, extra, scoreDeath, initialTime;
 	static Ship player;
 	static extraLife life;
@@ -57,19 +57,15 @@ public class Game extends Thread implements KeyListener{
 		initialTime = System.currentTimeMillis();
 		try {
 			initMultiple();
-		} catch (IOException e2) {
+			initSounds();
+		} catch (IOException | LineUnavailableException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		initImages(); //Initialize images sprites for the game
 		initFont();
 		
-		try {
-			initSounds();
-		} catch (LineUnavailableException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		fadeIn();
 		
 		long timeStart = initialTime;
 		
@@ -119,6 +115,20 @@ public class Game extends Thread implements KeyListener{
 		}
 		
 		extra = 0;
+		stopMusic();
+	}
+	
+	public void fadeIn() {
+	    for (int i = 0; i <= 255; i += 5) {
+	        graphics.setColor(new Color(0, 0, 0, 255-i));
+	        graphics.fillRect(0, 0, Window.WIDTH, Window.HEIGHT);
+	        window.repaint();
+	        try {
+	            Thread.sleep(25);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
 	
 	void initImages() { //Initializes images for the game
@@ -163,8 +173,7 @@ public class Game extends Thread implements KeyListener{
 	void initSounds() throws LineUnavailableException {
 		
 		sound = new Sound();
-		//playMusic(0);
-
+		playMusic(0);
 	}
 	
 	void createLife() {
@@ -177,7 +186,7 @@ public class Game extends Thread implements KeyListener{
 		
 		int randomizer = (int)(Math.random()*(max-min+1)+min); 
 		
-		if (time < 0 || time > 8000/randomizer) { //Enemy shooting is random
+		if (time < 0 || time > 9000/randomizer) { //Enemy shooting is random
 		    lastAttack = timeNow;
 
 			int randomizer2 = (int)(Math.random()*(4)+1); 
@@ -273,7 +282,7 @@ public class Game extends Thread implements KeyListener{
 		if (x2 < -Window.WIDTH) {
 			x2 = Window.WIDTH;
 		}
-		
+				
 		//TOP FOR SCROLLING BACKGROUND ONLY
 		
 		if (playerHit) {
@@ -295,7 +304,29 @@ public class Game extends Thread implements KeyListener{
 		graphics.setColor(Color.YELLOW);
 		graphics.drawString("Life: " + lifeCount, 60 , 60);
 		graphics.drawString("Score: " + counter, 560 , 60);
-		graphics.drawString("Enemies: " + enemiesKilled, 260 , 60);
+		//graphics.drawString("Enemies: " + enemiesKilled, 260 , 160);
+		
+		//Paint ulti sign
+		
+		if (enemiesKilled >= 4) {
+			graphics.drawString("U", 280 , 60);
+		}
+		if (enemiesKilled >= 8) {
+			graphics.drawString("L", 300 , 60);
+		}
+		if (enemiesKilled >= 12) {
+			graphics.drawString("T", 320 , 60);
+		}
+		if (enemiesKilled >= 16) {
+			graphics.drawString("I", 340 , 60);
+		}
+
+		if (activeUlti && intermitent%4 == 0) {
+			
+			graphics.drawRect(260, 80, 100, 40);
+			
+		}
+		intermitent++;
 		player.paint(graphics);
 		
 		if (life != null) { //If there isn't a life in the game rn

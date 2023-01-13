@@ -48,11 +48,14 @@ public class Menu extends Thread implements KeyListener{
 			}
 			//System.out.println("Eee funcionant + " +active);
 			repaintScreen();
-			System.out.println("ei!");
+			//System.out.println("ei!");
 			
 		}
 		//stopMusic();
 		active = false;
+		fadeOut();
+		storyScreen storyScreen = new storyScreen(w);
+		storyScreen.start();
 		
 		//w.removeKeyListener(this);
 				
@@ -130,6 +133,19 @@ public class Menu extends Thread implements KeyListener{
 
 		
 	}
+	
+	public void fadeOut() {
+	    for (int i = 0; i <= 255; i += 5) {
+	        gr.setColor(new Color(0, 0, 0, i));
+	        gr.fillRect(0, 0, Window.WIDTH, Window.HEIGHT);
+	        w.repaint();
+	        try {
+	            Thread.sleep(25);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -143,10 +159,8 @@ public class Menu extends Thread implements KeyListener{
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_1) {
 			try {
-				storyScreen storyScreen = new storyScreen(w);
 				active = false;
 				w.removeKeyListener(this);
-				storyScreen.start();
 				Game.gamemode = 1; //Easy mode
 			} 
 			catch (Exception e1) {
@@ -158,8 +172,6 @@ public class Menu extends Thread implements KeyListener{
 		else if (key == KeyEvent.VK_2) { 
 			try {
 				active = false;
-				storyScreen storyScreen = new storyScreen(w);
-				storyScreen.start();
 				Game.gamemode = 2; //Medium	
 				w.removeKeyListener(this);
 			} catch (Exception e1) {
@@ -172,8 +184,6 @@ public class Menu extends Thread implements KeyListener{
 			try {
 
 				Game.gamemode = 3; //Hard mode
-				storyScreen storyScreen = new storyScreen(w);
-				storyScreen.start();
 				active = false;
 				w.removeKeyListener(this);
 

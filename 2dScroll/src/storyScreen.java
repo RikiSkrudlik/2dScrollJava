@@ -31,6 +31,7 @@ public class storyScreen extends Thread implements KeyListener{
 		
 		public void run() {//Menu loop, similar procedure to the game class
 			
+			//fadeIn();
 			initImages();
 			initFont();
 			try {
@@ -54,10 +55,36 @@ public class storyScreen extends Thread implements KeyListener{
 				
 				
 			}
-			//stopMusic();
-
-			
+			fadeOut();	
+			game = new Game(w);
+			game.start();
 					
+		}
+		
+		public void fadeOut() {
+		    for (int i = 0; i <= 255; i += 5) {
+		        gr.setColor(new Color(0, 0, 0, i));
+		        gr.fillRect(0, 0, Window.WIDTH, Window.HEIGHT);
+		        w.repaint();
+		        try {
+		            Thread.sleep(25);
+		        } catch (InterruptedException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		}
+		
+		public void fadeIn() {
+		    for (int i = 0; i <= 255; i += 5) {
+		        gr.setColor(new Color(0, 0, 0, 255-i));
+		        gr.fillRect(0, 0, Window.WIDTH, Window.HEIGHT);
+		        w.repaint();
+		        try {
+		            Thread.sleep(25);
+		        } catch (InterruptedException e) {
+		            e.printStackTrace();
+		        }
+		    }
 		}
 		
 		void initSounds() throws LineUnavailableException {
@@ -148,10 +175,8 @@ public class storyScreen extends Thread implements KeyListener{
 			int key = e.getKeyCode();
 			if (key == KeyEvent.VK_P) {
 				try {
-					game = new Game(w);
 					active = false;
 					w.removeKeyListener(this);
-					game.start();
 				} 
 				catch (Exception e1) {
 					// TODO Auto-generated catch block
