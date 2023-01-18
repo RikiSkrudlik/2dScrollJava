@@ -65,7 +65,7 @@ public class Game extends Thread implements KeyListener{
 		initImages(); //Initialize images sprites for the game
 		initFont();
 		
-		fadeIn();
+		//fadeIn();
 		
 		long timeStart = initialTime;
 		
@@ -348,10 +348,11 @@ public class Game extends Thread implements KeyListener{
 	
 	void checkDeath() { //Simple lifecount if equals to 0 game over and show endScreen
 		
-		if (lifeCount == 0) {
+		if (lifeCount <= 0) {
 			gameOver endScreen = new gameOver(window);
 			playing = false;
 			window.removeKeyListener(this);
+			stopMusic();
 			gameOver.active = true;
 			endScreen.start();
 		}	

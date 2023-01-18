@@ -53,8 +53,24 @@ public class gameOver extends Thread implements KeyListener{
 		}
 		//stopMusic();
 		//Game.initialTime = 0; //To reset the score counter
+		fadeOut();
+		game = new Game(w);
+		game.start();
 		w.removeKeyListener(this);		
 				
+	}
+	
+	public void fadeOut() {
+	    for (int i = 0; i <= 255; i += 5) {
+	        gr.setColor(new Color(0, 0, 0, i));
+	        gr.fillRect(0, 0, Window.WIDTH, Window.HEIGHT);
+	        w.repaint();
+	        try {
+	            Thread.sleep(25);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
 	
 	void initSounds() throws LineUnavailableException {
@@ -139,10 +155,8 @@ public class gameOver extends Thread implements KeyListener{
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_1) {
 			try {
-				game = new Game(w);
 				active = false;
 				w.removeKeyListener(this);
-				game.start();
 				Game.playing = true;
 				Game.gamemode = 1; //Easy mode
 				stopMusic();
@@ -155,10 +169,8 @@ public class gameOver extends Thread implements KeyListener{
 			}
 		else if (key == KeyEvent.VK_2) { 
 			try {
-				game = new Game(w);
 				active = false;
 				w.removeKeyListener(this);
-				game.start();
 				Game.playing = true;
 				Game.gamemode = 2; //Easy mode
 				stopMusic();
@@ -170,10 +182,8 @@ public class gameOver extends Thread implements KeyListener{
 		}
 		else if (key == KeyEvent.VK_3) { 
 			try {
-				game = new Game(w);
 				active = false;
 				w.removeKeyListener(this);
-				game.start();
 				Game.playing = true;
 				Game.gamemode = 3; //Easy mode
 				stopMusic();
