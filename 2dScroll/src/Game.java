@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,6 +20,8 @@ public class Game extends Thread implements KeyListener{
 	static Window window;
 	static Graphics graphics;
 	static Menu menu;
+	
+	recordTable table = new recordTable ("Stink", 4);
 	
 	BufferedImage img, img2;
 	BufferedImage hitScreen = new BufferedImage(Window.WIDTH, Window.HEIGHT, BufferedImage.TYPE_INT_ARGB);
@@ -53,6 +56,14 @@ public class Game extends Thread implements KeyListener{
 	
 	public void run() {
 		//Initialize screen objects
+		
+		try {
+			table.updateTable();
+			table.printTable();
+		} catch (SQLException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		}
 		
 		initialTime = System.currentTimeMillis();
 		try {
