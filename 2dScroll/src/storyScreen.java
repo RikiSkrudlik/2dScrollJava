@@ -16,7 +16,7 @@ public class storyScreen extends Thread implements KeyListener{
 		Window w;
 		Graphics gr;
 		static Image img;
-		static Game game;
+		static setName setName;
 		static boolean active = true;
 		static Sound sound;
 		int counter = 0;
@@ -56,8 +56,8 @@ public class storyScreen extends Thread implements KeyListener{
 				
 			}
 			fadeOut();	
-			game = new Game(w);
-			game.start();
+			setName = new setName(w);
+			setName.start();
 					
 		}
 		

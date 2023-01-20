@@ -15,6 +15,7 @@ public class gameOver extends Thread implements KeyListener{
 	
 	Window w;
 	Graphics gr;
+	static String name;
 	static Image img;
 	static Game game;
 	static boolean active = true;
