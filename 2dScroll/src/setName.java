@@ -135,7 +135,7 @@ public class setName extends Thread implements KeyListener{
 			  public void actionPerformed(ActionEvent evt) {
 			    String temp = nameField.getText();
 			    gameOver.name = temp; //Store it in the name variable
-			    nameEntered = true;
+			    //nameEntered = true;
 			    w.remove(nameField); //remove the text field when the user press enter
 			  }
 			  
