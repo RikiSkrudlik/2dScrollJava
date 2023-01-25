@@ -5,6 +5,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 public class Window extends Frame implements WindowListener{
+	
 	Menu menu;
 	Image im;
 	Graphics gr;
