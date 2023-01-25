@@ -16,6 +16,7 @@ public class gameOver extends Thread implements KeyListener{
 	Window w;
 	Graphics gr;
 	static String name;
+	static Records = new recordTable;
 	static Image img;
 	static Game game;
 	static boolean active = true;
@@ -211,6 +212,9 @@ public class gameOver extends Thread implements KeyListener{
 		}
 		else if (key == KeyEvent.VK_3) {
 			active = false;
+		}
+		else if (key == KeyEvent.VK_9) {
+			recordTable.
 		}
 
 	}
