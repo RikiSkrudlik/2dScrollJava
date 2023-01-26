@@ -16,7 +16,6 @@ public class gameOver extends Thread implements KeyListener{
 	Window w;
 	Graphics gr;
 	static String name;
-	static Records = new recordTable;
 	static Image img;
 	static Game game;
 	static boolean active = true;
@@ -194,12 +193,16 @@ public class gameOver extends Thread implements KeyListener{
 				e1.printStackTrace();
 			}
 		}
+		else if (key == KeyEvent.VK_9) { //Show records
+			displayRecord records = new displayRecord();
+			records.start();
+		}
 		
 		
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void keyReleased(KeyEvent e) { //If 1,2,3 play again
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_1) {
@@ -212,9 +215,6 @@ public class gameOver extends Thread implements KeyListener{
 		}
 		else if (key == KeyEvent.VK_3) {
 			active = false;
-		}
-		else if (key == KeyEvent.VK_9) {
-			recordTable.
 		}
 
 	}

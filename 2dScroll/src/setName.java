@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JTextField;
 
 public class setName extends Thread implements KeyListener{
 	
@@ -120,14 +120,15 @@ public class setName extends Thread implements KeyListener{
 	
 	public void writeName() {
 		
-		boolean nameEntered = false;
+			gr.setColor(Color.YELLOW);
 		
-		while(!nameEntered) {
-			
-			JTextField nameField = new JTextField();
+			TextField nameField = new TextField();
 			nameField.setColumns(20);
-			nameField.setBounds(80, 360, 200, 30); // set the size and location of the text field
-
+			nameField.setBounds(350, 400, 200, 70); // set the size and location of the text field
+			nameField.setFont(gr.getFont());
+			nameField.setForeground(Color.YELLOW);
+			nameField.setBackground(new Color(0,0,0,0)); //set transparent
+			
 			w.add(nameField); // add the text field to the Window
 
 			nameField.addActionListener(new ActionListener() {
@@ -140,8 +141,6 @@ public class setName extends Thread implements KeyListener{
 			  }
 			  
 			});
-		}
-
 	}
 
 	

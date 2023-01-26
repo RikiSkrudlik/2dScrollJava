@@ -174,7 +174,7 @@ public class storyScreen extends Thread implements KeyListener{
 			// TODO Auto-generated method stub
 			int key = e.getKeyCode();
 			if (key == KeyEvent.VK_P) {
-				try {
+				try { //We enter set name
 					active = false;
 					w.removeKeyListener(this);
 				} 
