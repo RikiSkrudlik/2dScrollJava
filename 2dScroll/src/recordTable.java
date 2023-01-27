@@ -11,9 +11,9 @@ import java.sql.Statement;
 public class recordTable {
 	
 	String name;
-	int points;
+	long points;
 	
-	recordTable(String name, int points){
+	recordTable(String name, long points){
 		
 		this.name = name;
 		this.points = points;

@@ -5,8 +5,6 @@ import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -23,6 +21,7 @@ public class setName extends Thread implements KeyListener{
 	Window w;
 	Graphics gr;
 	static String name;
+	TextField nameField = new TextField();
 	static Image img;
 	static boolean active = true;
 	static Sound sound;
@@ -33,15 +32,23 @@ public class setName extends Thread implements KeyListener{
 		this.w = w;
 		this.gr = w.gr;
 		w.addKeyListener(this);
+		gr.setColor(Color.YELLOW);
+		nameField.setColumns(20);
+		nameField.setBounds(350, 400, 200, 70); // set the size and location of the text field
+		nameField.setFont(gr.getFont());
+		nameField.setForeground(Color.YELLOW);
+		nameField.addKeyListener(this);
+		nameField.setBackground(new Color(0,0,0,0)); //set transparent
+		w.add(nameField); // add the text field to the Window
 		
 	}
 	
 	public void run() {
 		
+		System.out.println("Bines!");
+		
 		initImages();
 		initFont();
-		writeName();
-		System.out.println(" "+gameOver.name);
 						
 		while(active) {
 			
@@ -119,28 +126,7 @@ public class setName extends Thread implements KeyListener{
 	}
 	
 	public void writeName() {
-		
-			gr.setColor(Color.YELLOW);
-		
-			TextField nameField = new TextField();
-			nameField.setColumns(20);
-			nameField.setBounds(350, 400, 200, 70); // set the size and location of the text field
-			nameField.setFont(gr.getFont());
-			nameField.setForeground(Color.YELLOW);
-			nameField.setBackground(new Color(0,0,0,0)); //set transparent
-			
-			w.add(nameField); // add the text field to the Window
 
-			nameField.addActionListener(new ActionListener() {
-				
-			  public void actionPerformed(ActionEvent evt) {
-			    String temp = nameField.getText();
-			    gameOver.name = temp; //Store it in the name variable
-			    //nameEntered = true;
-			    w.remove(nameField); //remove the text field when the user press enter
-			  }
-			  
-			});
 	}
 
 	
@@ -154,10 +140,13 @@ public class setName extends Thread implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_P) {
+		if (key == KeyEvent.VK_ENTER) {
 			try {
 				active = false;
+				game.name = nameField.getText();
+				w.remove(nameField);
 				w.removeKeyListener(this);
+				nameField.removeKeyListener(this);
 			} 
 			catch (Exception e1) {
 				// TODO Auto-generated catch block
@@ -170,7 +159,7 @@ public class setName extends Thread implements KeyListener{
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_P) {
+		if (key == KeyEvent.VK_ENTER) {
 			active = false;
 		}
 	}

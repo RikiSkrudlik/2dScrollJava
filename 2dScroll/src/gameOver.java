@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
@@ -15,21 +16,34 @@ public class gameOver extends Thread implements KeyListener{
 	
 	Window w;
 	Graphics gr;
-	static String name;
+	recordTable table;
+	String name;
+	long points;
 	static Image img;
 	static Game game;
 	static boolean active = true;
 	static Sound sound;
 
-	public gameOver(Window w) {
+	public gameOver(Window w, String name, long points) {
 
 		this.w = w;
 		this.gr = w.gr;
+		this.name = name;
+		this.points = points;
 		w.addKeyListener(this);
 		// TODO Auto-generated constructor stub
 	} //Game over class it will be similar to the menu
 	
 	public void run() {//Menu loop, similar procedure to the game class
+		
+		table = new recordTable (name, points); //First we update the recordTable
+		try {
+			table.updateTable();
+			table.printTable();
+		} catch (SQLException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		}
 		
 		initImages();
 		initFont();

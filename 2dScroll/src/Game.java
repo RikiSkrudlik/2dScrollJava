@@ -20,12 +20,7 @@ public class Game extends Thread implements KeyListener{
 	static Window window;
 	static Graphics graphics;
 	static Menu menu;
-	
-	recordTable table = new recordTable ("Stink", 4);
-	
-	BufferedImage img, img2;
-	BufferedImage hitScreen = new BufferedImage(Window.WIDTH, Window.HEIGHT, BufferedImage.TYPE_INT_ARGB);
-
+	String name;
 	static Boolean playing = true, playerHit = false, lifeHit = false, ulti = false, activeUlti = false; //Know if you are currently playing
 	static int gamemode, fadeCounter = 0, intermitent = 4;  //For the background scrolling
 	int enemyCount, enemiesKilled;
@@ -34,7 +29,11 @@ public class Game extends Thread implements KeyListener{
 	static long counter, extra, scoreDeath, initialTime;
 	static Ship player;
 	static extraLife life;
+	
+	BufferedImage img, img2;
+	BufferedImage hitScreen = new BufferedImage(Window.WIDTH, Window.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 	//Various arrays for enemies bullets...
+	
 	ArrayList<Enemy> enemies = new ArrayList<Enemy>(); //Dinamic Array
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>(); //Dinamic Array
 	static ArrayList<BulletEnemy> enemyBullets = new ArrayList<BulletEnemy>(); //Dinamic Array
@@ -56,14 +55,6 @@ public class Game extends Thread implements KeyListener{
 	
 	public void run() {
 		//Initialize screen objects
-		
-		try {
-			table.updateTable();
-			table.printTable();
-		} catch (SQLException e3) {
-			// TODO Auto-generated catch block
-			e3.printStackTrace();
-		}
 		
 		initialTime = System.currentTimeMillis();
 		try {
@@ -360,7 +351,7 @@ public class Game extends Thread implements KeyListener{
 	void checkDeath() { //Simple lifecount if equals to 0 game over and show endScreen
 		
 		if (lifeCount <= 0) {
-			gameOver endScreen = new gameOver(window);
+			gameOver endScreen = new gameOver(window, name, counter); //Go to endscreen and update recordtable
 			playing = false;
 			window.removeKeyListener(this);
 			stopMusic();
