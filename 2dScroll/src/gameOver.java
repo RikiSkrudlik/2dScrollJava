@@ -39,7 +39,6 @@ public class gameOver extends Thread implements KeyListener{
 		table = new recordTable (name, points); //First we update the recordTable
 		try {
 			table.updateTable();
-			table.printTable();
 		} catch (SQLException e3) {
 			// TODO Auto-generated catch block
 			e3.printStackTrace();
@@ -69,7 +68,7 @@ public class gameOver extends Thread implements KeyListener{
 		//stopMusic();
 		//Game.initialTime = 0; //To reset the score counter
 		fadeOut();
-		game = new Game(w);
+		game = new Game(w, name);
 		game.start();
 		w.removeKeyListener(this);		
 				
@@ -208,8 +207,12 @@ public class gameOver extends Thread implements KeyListener{
 			}
 		}
 		else if (key == KeyEvent.VK_9) { //Show records
-			displayRecord records = new displayRecord();
-			records.start();
+			
+			displayRecords dr = new displayRecords(w);
+			active = false;
+			w.removeKeyListener(this);
+			dr.start();
+			
 		}
 		
 		

@@ -65,7 +65,7 @@ public class setName extends Thread implements KeyListener{
 		}
 		
 		fadeOut();	
-		game = new Game(w);
+		game = new Game(w, name);
 		game.start();
 		
 	}
@@ -143,7 +143,7 @@ public class setName extends Thread implements KeyListener{
 		if (key == KeyEvent.VK_ENTER) {
 			try {
 				active = false;
-				game.name = nameField.getText();
+				name = nameField.getText();
 				w.remove(nameField);
 				w.removeKeyListener(this);
 				nameField.removeKeyListener(this);

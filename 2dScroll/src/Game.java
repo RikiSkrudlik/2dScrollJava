@@ -40,7 +40,7 @@ public class Game extends Thread implements KeyListener{
 	
 	Random rand = new Random();
 	
-	Game (Window w){
+	Game (Window w, String name){
 		window = w;
 		graphics = w.gr;
 		window.addKeyListener(this);

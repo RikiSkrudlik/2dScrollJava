@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,6 +18,7 @@ public class recordTable {
 		
 		this.name = name;
 		this.points = points;
+
 		
 	}
 
@@ -29,22 +31,6 @@ public class recordTable {
 		conn.close();
 
 		
-	}
-	
-	public void printTable() throws SQLException{
-		
-		Connection conn = DriverManager.getConnection("jdbc:sqlite:recordTable.sqlite"); //Open database
-		Statement smt = conn.createStatement(); //to execute anthing first create statement
-		ResultSet rs = smt.executeQuery("SELECT Names FROM Records");
-	
-		while (rs.next()) {
-		
-			System.out.println(rs.getString("Names"));
-		
-		}
-		
-		smt.close();
-		conn.close();
 	}
 
 }
