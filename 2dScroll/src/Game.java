@@ -21,10 +21,10 @@ public class Game extends Thread implements KeyListener{
 	static Graphics graphics;
 	static Menu menu;
 	String name;
+	static Sound sound;
 	static Boolean playing = true, playerHit = false, lifeHit = false, ulti = false, activeUlti = false; //Know if you are currently playing
 	static int gamemode, fadeCounter = 0, intermitent = 4;  //For the background scrolling
 	int enemyCount, enemiesKilled;
-	static Sound sound;
 	int lifeCount = 3, ultiNumber = 16, x = 0, y = 0, x2 = Window.WIDTH, backgroundWidth, backgroundHeight; //number of enemies needed for ulti
 	static long counter, extra, scoreDeath, initialTime;
 	static Ship player;
@@ -54,9 +54,15 @@ public class Game extends Thread implements KeyListener{
 	}
 	
 	public void run() {
+		
 		//Initialize screen objects
 		
 		initialTime = System.currentTimeMillis();
+		long timeStart = initialTime;
+		
+		initImages(); //Initialize images sprites for the game
+		initFont();
+		
 		try {
 			initMultiple();
 			initSounds();
@@ -64,21 +70,12 @@ public class Game extends Thread implements KeyListener{
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		initImages(); //Initialize images sprites for the game
-		initFont();
-		
-		//fadeIn();
-		
-		long timeStart = initialTime;
 		
 		while(playing) {
 			
 			//We will be creating enemies every x seconds in random positions
 			//In front of the player
-			
-	        //drawFadeBlackScreen();
 
-			
 			long timeNow = System.currentTimeMillis();
 			long time = timeNow - timeStart;
 			
@@ -96,28 +93,31 @@ public class Game extends Thread implements KeyListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}//Detect collisions
+			
 			moveObjects(); //Move screen objects
 			checkBounds();
 			checkDeath();
 			enemiesAttack();
 			checkUlti();
+			
 			if (life == null) { //if there isn't a life created (so it doesn't erase the last one)
 				createLife();
 			}
-			
-			
+				
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
+			
 			repaintScreen(); //Repaint screen
 
 		}
 		
+		playing = false;
+		window.removeKeyListener(this);
 		extra = 0;
-		stopMusic();
 	}
 	
 	public void fadeIn() {
@@ -156,6 +156,7 @@ public class Game extends Thread implements KeyListener{
 		
 		player = new Ship(50, 50); //Init player
 		player.initTurbo();
+		setName.nameField.removeKeyListener(this);
 		
 	}
 	
@@ -175,7 +176,13 @@ public class Game extends Thread implements KeyListener{
 	void initSounds() throws LineUnavailableException {
 		
 		sound = new Sound();
-		playMusic(0);
+		
+		try {
+			playMusic(0);
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	void createLife() {
@@ -220,7 +227,7 @@ public class Game extends Thread implements KeyListener{
 	}
 	
 	void moveObjects() {
-		//y++;
+
 		player.checkBorder();
 		player.move();
 		if (life != null) {
@@ -351,10 +358,10 @@ public class Game extends Thread implements KeyListener{
 	void checkDeath() { //Simple lifecount if equals to 0 game over and show endScreen
 		
 		if (lifeCount <= 0) {
-			gameOver endScreen = new gameOver(window, name, counter); //Go to endscreen and update recordtable
 			playing = false;
-			window.removeKeyListener(this);
 			stopMusic();
+			gameOver endScreen = new gameOver(window, name, counter); //Go to endscreen and update recordtable
+			window.removeKeyListener(this);
 			gameOver.active = true;
 			endScreen.start();
 		}	
@@ -444,8 +451,14 @@ public class Game extends Thread implements KeyListener{
 		sound.loop();
 	}
 	
-	public void stopMusic() {
-		sound.stop();
+	public static void stopMusic() {
+		try {
+			sound.stop();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("ei");
 	}
 	
 	public void playSE(int i) throws LineUnavailableException {
@@ -453,8 +466,6 @@ public class Game extends Thread implements KeyListener{
 		sound.setFile(i);
 		sound.play();
 	}
-	
-	
 	
 	
 	public void addEnemy(Enemy e) {

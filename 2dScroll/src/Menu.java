@@ -31,33 +31,29 @@ public class Menu extends Thread implements KeyListener{
 				
 		initImages();
 		initFont();
-//		try {
-//			initSounds();
-//		} catch (LineUnavailableException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+		try {
+			initSounds();
+		} catch (LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 						
 		while(active) {
 			
 			try {
-				Thread.sleep(50);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//System.out.println("Eee funcionant + " +active);
-			repaintScreen();
-			//System.out.println("ei!");
+		repaintScreen();
 			
 		}
-		//stopMusic();
+		
 		active = false;
 		fadeOut();
 		storyScreen storyScreen = new storyScreen(w);
 		storyScreen.start();
-		
-		//w.removeKeyListener(this);
 				
 	}
 	
@@ -106,7 +102,7 @@ public class Menu extends Thread implements KeyListener{
 		sound.loop();
 	}
 	
-	public void stopMusic() {
+	public static void stopMusic() {
 		sound.stop();
 	}
 	

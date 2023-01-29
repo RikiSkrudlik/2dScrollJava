@@ -21,7 +21,7 @@ public class setName extends Thread implements KeyListener{
 	Window w;
 	Graphics gr;
 	static String name;
-	TextField nameField = new TextField();
+	static TextField nameField = new TextField();
 	static Image img;
 	static boolean active = true;
 	static Sound sound;
@@ -31,15 +31,22 @@ public class setName extends Thread implements KeyListener{
 	setName(Window w){
 		this.w = w;
 		this.gr = w.gr;
-		w.addKeyListener(this);
 		gr.setColor(Color.YELLOW);
-		nameField.setColumns(20);
-		nameField.setBounds(350, 400, 200, 70); // set the size and location of the text field
-		nameField.setFont(gr.getFont());
-		nameField.setForeground(Color.YELLOW);
-		nameField.addKeyListener(this);
-		nameField.setBackground(new Color(0,0,0,0)); //set transparent
+//		nameField.setColumns(20);
+//		nameField.setBounds(350, 400, 200, 70); // set the size and location of the text field
+//		nameField.setFont(gr.getFont());
+//		nameField.setForeground(Color.YELLOW);
+//		nameField.setBackground(new Color(0,0,0,0)); //set transparent
+//		nameField.addActionListener(new ActionListener() {
+//		    public void actionPerformed(ActionEvent e) {
+//		        
+//		    	name = nameField.getText();
+//		    	w.remove(nameField);
+//		    	active = false;
+//		    }
+//		});
 		w.add(nameField); // add the text field to the Window
+		w.addKeyListener(this);
 		
 	}
 	
@@ -64,6 +71,9 @@ public class setName extends Thread implements KeyListener{
 				
 		}
 		
+		System.out.println("Hola");
+		//w.remove(nameField);
+		Menu.stopMusic(); //Stop the intro music 
 		fadeOut();	
 		game = new Game(w, name);
 		game.start();
@@ -124,12 +134,7 @@ public class setName extends Thread implements KeyListener{
 	        }
 	    }
 	}
-	
-	public void writeName() {
 
-	}
-
-	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -141,12 +146,9 @@ public class setName extends Thread implements KeyListener{
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_ENTER) {
-			try {
+			try { //We enter set name
 				active = false;
-				name = nameField.getText();
-				w.remove(nameField);
 				w.removeKeyListener(this);
-				nameField.removeKeyListener(this);
 			} 
 			catch (Exception e1) {
 				// TODO Auto-generated catch block
@@ -158,11 +160,9 @@ public class setName extends Thread implements KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_ENTER) {
-			active = false;
-		}
+		
 	}
+
 	
 
 	

@@ -1,6 +1,8 @@
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -17,7 +19,8 @@ public class displayRecords extends Thread implements KeyListener{
 	
 	Window w;
 	Graphics gr;
-	Boolean active = true;
+	Image img;
+	boolean active = true;
 	
 	displayRecords(Window w){
 	
@@ -33,6 +36,21 @@ public class displayRecords extends Thread implements KeyListener{
 		
 		while(active) {
 			
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			try {
+				paintScreen();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			w.repaint();
 		}
 		
 	}
@@ -41,7 +59,7 @@ public class displayRecords extends Thread implements KeyListener{
 		
 		try {
 
-			storyScreen.img = ImageIO.read(new File("res/BackgroundBlurr.png"));
+			img = ImageIO.read(new File("res/BackgroundBlurr.png"));
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -70,9 +88,12 @@ public class displayRecords extends Thread implements KeyListener{
 		Statement smt = conn.createStatement(); //to execute anthing first create statement
 		ResultSet rs = smt.executeQuery("SELECT * FROM Records ORDER BY Points DESC");
 		
-		gr.drawString("Players                                Score", 80, 80);
+		gr.setColor(Color.YELLOW);
+		gr.drawImage(img, 0, 0, Window.WIDTH, Window.HEIGHT, null);
 		
-		for (int i = 0; i < 10; i++) { //Print the first 10 elements in descending order if possible
+		gr.drawString("Players                      Score", 80, 80);
+		
+		for (int i = 1; i < 11; i++) { //Print the first 10 elements in descending order if possible
 		
 			try {
 				gr.drawString(rs.getString("Names") + "                   " + rs.getLong("Points"), 80, 80 + i*50);
@@ -86,11 +107,8 @@ public class displayRecords extends Thread implements KeyListener{
 		
 		smt.close();
 		conn.close();
+		
 	}
-	
-	
-	
-	
 	
 	
 	
