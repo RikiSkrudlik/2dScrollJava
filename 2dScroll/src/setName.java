@@ -71,9 +71,8 @@ public class setName extends Thread implements KeyListener{
 				
 		}
 		
-		System.out.println("Hola");
-		//w.remove(nameField);
-		Menu.stopMusic(); //Stop the intro music 
+		Menu.stopMusic();
+		
 		fadeOut();	
 		game = new Game(w, name);
 		game.start();

@@ -127,6 +127,10 @@ public class displayRecords extends Thread implements KeyListener{
 		if (key == KeyEvent.VK_ENTER) {
 			try {
 				active = false;
+				Menu menu = new Menu(w);
+				menu.isRecord = true;
+				Menu.active = true;
+				menu.start();
 				w.removeKeyListener(this);
 				
 			} 

@@ -18,8 +18,10 @@ public class Menu extends Thread implements KeyListener{
 	static Image img;
 	//static storyScreen storyscreen = new storyScreen(w);
 	static boolean active = true;
+	int recordOrplay;
 	static Sound sound;
 	int counter = 0;
+	Boolean isRecord = false;
 	
 	public Menu(Window w) {
 		this.w = w;
@@ -49,11 +51,18 @@ public class Menu extends Thread implements KeyListener{
 		repaintScreen();
 			
 		}
-		
+		if (recordOrplay == 0) { //Record has been clicked
+			
+			fadeOut();
+			storyScreen storyScreen = new storyScreen(w);
+			storyScreen.start();
+		}
+		else {
+			
+			displayRecords dr = new displayRecords(w);
+			dr.start();
+		}
 		active = false;
-		fadeOut();
-		storyScreen storyScreen = new storyScreen(w);
-		storyScreen.start();
 				
 	}
 	
@@ -87,12 +96,11 @@ public class Menu extends Thread implements KeyListener{
 	void initSounds() throws LineUnavailableException {
 		
 		sound = new Sound();
-		try {
+		
+		if (isRecord == false) { //Just to check if he comes from looking at records
 			playMusic(1);
-		} catch (LineUnavailableException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
+
 	}
 	
 	public void playMusic(int i) throws LineUnavailableException {
@@ -102,14 +110,16 @@ public class Menu extends Thread implements KeyListener{
 		sound.loop();
 	}
 	
-	public static void stopMusic() {
-		sound.stop();
-	}
 	
 	public void playSE(int i) throws LineUnavailableException {
 		
 		sound.setFile(i);
 		sound.play();
+	}
+	
+	public static void stopMusic() {
+		
+		sound.stop();
 	}
 	
 	public void repaintScreen() { //Paint Menu elements
@@ -121,10 +131,12 @@ public class Menu extends Thread implements KeyListener{
 		gr.drawString("EASY MODE (PRESS 1) ", 115 , 455);
 		gr.drawString("NORMAL MODE (PRESS 2) ", 115 , 555);
 		gr.drawString("HARD MODE (PRESS 3) ", 115 , 655);
+		gr.drawString("SEE RECORD TABLE (PRESS 9) ", 115 , 150);
 		gr.setColor(Color.YELLOW);
 		gr.drawString("EASY MODE (PRESS 1) ", 120 , 450);
 		gr.drawString("NORMAL MODE (PRESS 2) ", 120 , 550);
 		gr.drawString("HARD MODE (PRESS 3) ", 120 , 650);
+		gr.drawString("SEE RECORD TABLE (PRESS 9) ", 115 , 155);
 		w.repaint();
 
 		
@@ -167,9 +179,11 @@ public class Menu extends Thread implements KeyListener{
 			}
 		else if (key == KeyEvent.VK_2) { 
 			try {
+
 				active = false;
-				Game.gamemode = 2; //Medium	
 				w.removeKeyListener(this);
+				Game.gamemode = 2; //Medium	
+
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -183,10 +197,19 @@ public class Menu extends Thread implements KeyListener{
 				active = false;
 				w.removeKeyListener(this);
 
+
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+		else if (key == KeyEvent.VK_9) { //Show records
+			
+			recordOrplay = 1;
+			active = false;
+			w.removeKeyListener(this);
+			
+			
 		}
 		
 		
@@ -206,6 +229,11 @@ public class Menu extends Thread implements KeyListener{
 		}
 		else if (key == KeyEvent.VK_3) {
 			active = false;
+		}
+		else if (key == KeyEvent.VK_9) { //Show records
+			
+			active = false;
+			
 		}
 
 	}

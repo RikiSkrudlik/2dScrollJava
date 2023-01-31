@@ -87,18 +87,6 @@ public class storyScreen extends Thread implements KeyListener{
 		    }
 		}
 		
-		void initSounds() throws LineUnavailableException {
-			
-//			sound = new Sound();
-//			try {
-//				//playMusic();
-//			} catch (LineUnavailableException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-
-		}
-		
 		public void repaintScreen() { //Paint Menu elements
 			
 			gr.setColor(Color.BLACK);
@@ -152,16 +140,22 @@ public class storyScreen extends Thread implements KeyListener{
 			
 		}
 		
-//		public void playMusic(int i) throws LineUnavailableException {
-//			
-//			sound.setFile(i);
-//			sound.play();
-//			sound.loop();
-//		}
-//		
-//		public void stopMusic() {
-//			sound.stop();
-//		}
+		void initSounds() throws LineUnavailableException {
+			
+			sound = new Sound();
+			
+		}
+		
+		public static void playMusic(int i) throws LineUnavailableException {
+			
+			sound.setFile(i);
+			sound.play();
+			sound.loop();
+		}
+		
+		public static void stopMusic() {
+			sound.stop();
+		}
 
 		@Override
 		public void keyTyped(KeyEvent e) {
@@ -173,7 +167,7 @@ public class storyScreen extends Thread implements KeyListener{
 		public void keyPressed(KeyEvent e) {
 			// TODO Auto-generated method stub
 			int key = e.getKeyCode();
-			if (key == KeyEvent.VK_P) {
+			if (key == KeyEvent.VK_ENTER) {
 				try { //We enter set name
 					active = false;
 					w.removeKeyListener(this);

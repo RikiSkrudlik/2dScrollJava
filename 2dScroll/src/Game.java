@@ -177,12 +177,7 @@ public class Game extends Thread implements KeyListener{
 		
 		sound = new Sound();
 		
-		try {
-			playMusic(0);
-		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		storyScreen.playMusic(0);
 	}
 	
 	void createLife() {
@@ -204,7 +199,7 @@ public class Game extends Thread implements KeyListener{
 				
 			if (randomizer2 == 3) { 
 					
-				life = new extraLife(600 + rand.nextInt(Window.WIDTH), 
+				life = new extraLife(800 + rand.nextInt(Window.WIDTH), 
 					rand.nextInt(Window.HEIGHT - extraLife.HEIGHT));
 					
 				}
@@ -359,7 +354,7 @@ public class Game extends Thread implements KeyListener{
 		
 		if (lifeCount <= 0) {
 			playing = false;
-			stopMusic();
+			storyScreen.stopMusic();
 			gameOver endScreen = new gameOver(window, name, counter); //Go to endscreen and update recordtable
 			window.removeKeyListener(this);
 			gameOver.active = true;
