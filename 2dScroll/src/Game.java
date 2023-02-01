@@ -45,6 +45,8 @@ public class Game extends Thread implements KeyListener{
 		graphics = w.gr;
 		window.addKeyListener(this);
 		window.setFocusable(true);
+		window.requestFocus();
+		this.name = name;
 	}
 	
 	public void checkUlti() {//If you killed 15 enemies you allowed to ulti
@@ -60,6 +62,7 @@ public class Game extends Thread implements KeyListener{
 		initialTime = System.currentTimeMillis();
 		long timeStart = initialTime;
 		
+		System.out.println(" " +name);
 		initImages(); //Initialize images sprites for the game
 		initFont();
 		

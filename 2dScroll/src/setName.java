@@ -5,14 +5,17 @@ import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JTextField;
 
-public class setName extends Thread implements KeyListener{
+public class setName extends Thread implements KeyListener, ActionListener{
 	
 	//Extends storyScreen as its just another screen before the start
 	//Of the game which will only be executed when you first open de exe
@@ -32,19 +35,20 @@ public class setName extends Thread implements KeyListener{
 		this.w = w;
 		this.gr = w.gr;
 		gr.setColor(Color.YELLOW);
-//		nameField.setColumns(20);
-//		nameField.setBounds(350, 400, 200, 70); // set the size and location of the text field
-//		nameField.setFont(gr.getFont());
-//		nameField.setForeground(Color.YELLOW);
-//		nameField.setBackground(new Color(0,0,0,0)); //set transparent
-//		nameField.addActionListener(new ActionListener() {
-//		    public void actionPerformed(ActionEvent e) {
-//		        
-//		    	name = nameField.getText();
-//		    	w.remove(nameField);
-//		    	active = false;
-//		    }
-//		});
+		nameField.setColumns(20);
+		nameField.setBounds(350, 400, 200, 70); // set the size and location of the text field
+		nameField.setFont(gr.getFont());
+		nameField.setForeground(Color.YELLOW);
+		nameField.setBackground(new Color(0,0,0,0)); //set transparent
+		nameField.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        
+		    	name = nameField.getText();
+		    	w.remove(nameField);
+		    	active = false;
+		    	
+		    }
+		});
 		w.add(nameField); // add the text field to the Window
 		w.addKeyListener(this);
 		
@@ -147,7 +151,7 @@ public class setName extends Thread implements KeyListener{
 		if (key == KeyEvent.VK_ENTER) {
 			try { //We enter set name
 				active = false;
-				w.removeKeyListener(this);
+				//w.removeKeyListener(this);
 			} 
 			catch (Exception e1) {
 				// TODO Auto-generated catch block
@@ -158,6 +162,12 @@ public class setName extends Thread implements KeyListener{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

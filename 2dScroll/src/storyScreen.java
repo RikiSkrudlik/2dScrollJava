@@ -183,7 +183,7 @@ public class storyScreen extends Thread implements KeyListener{
 		public void keyReleased(KeyEvent e) {
 			// TODO Auto-generated method stub
 			int key = e.getKeyCode();
-			if (key == KeyEvent.VK_P) {
+			if (key == KeyEvent.VK_ENTER) {
 				active = false;
 			}
 		}
