@@ -23,6 +23,7 @@ public class Sound {
 			soundURL[5] = getClass().getResource("sound/playerHit.wav");
 			soundURL[6] = getClass().getResource("sound/extraLife.wav");
 			soundURL[7] = getClass().getResource("sound/ulti.wav");
+			//soundURL[8] = getClass().getResource("sound/click.wav");
 
 	}
 	

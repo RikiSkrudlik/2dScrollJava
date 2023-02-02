@@ -26,8 +26,8 @@ public class recordTable {
 		 //TODO Auto-generated method stub
 		Connection conn = DriverManager.getConnection("jdbc:sqlite:recordTable.sqlite"); //Open database
 		Statement smt = conn.createStatement(); //to execute anthing first create statement
-		System.out.println(" " + name);
 		smt.executeUpdate("INSERT INTO Records (Names, Points) VALUES ('" + name + "', " + points + ")");
+		//smt.executeUpdate("DELETE FROM Records");
 		smt.close();
 		conn.close();
 

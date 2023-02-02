@@ -167,6 +167,7 @@ public class Menu extends Thread implements KeyListener{
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_1) {
 			try {
+				playSE(8);
 				active = false;
 				w.removeKeyListener(this);
 				Game.gamemode = 1; //Easy mode
@@ -179,7 +180,8 @@ public class Menu extends Thread implements KeyListener{
 			}
 		else if (key == KeyEvent.VK_2) { 
 			try {
-
+				
+				playSE(8);
 				active = false;
 				w.removeKeyListener(this);
 				Game.gamemode = 2; //Medium	
@@ -192,7 +194,8 @@ public class Menu extends Thread implements KeyListener{
 		}
 		else if (key == KeyEvent.VK_3) { 
 			try {
-
+				
+				playSE(8);
 				Game.gamemode = 3; //Hard mode
 				active = false;
 				w.removeKeyListener(this);
@@ -205,9 +208,15 @@ public class Menu extends Thread implements KeyListener{
 		}
 		else if (key == KeyEvent.VK_9) { //Show records
 			
-			recordOrplay = 1;
-			active = false;
-			w.removeKeyListener(this);
+			try {
+				playSE(8);
+				recordOrplay = 1;
+				active = false;
+				w.removeKeyListener(this);
+			} catch (LineUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 			
 		}

@@ -82,26 +82,55 @@ public class displayRecords extends Thread implements KeyListener{
 		
 	}
 	
-	public void paintScreen() throws SQLException{
+public void paintScreen() throws SQLException{
+		
+		int counter = 1;
 		
 		Connection conn = DriverManager.getConnection("jdbc:sqlite:recordTable.sqlite"); //Open database
 		Statement smt = conn.createStatement(); //to execute anthing first create statement
 		ResultSet rs = smt.executeQuery("SELECT * FROM Records ORDER BY Points DESC");
 		
-		gr.setColor(Color.YELLOW);
 		gr.drawImage(img, 0, 0, Window.WIDTH, Window.HEIGHT, null);
 		
-		gr.drawString("Players                      Score", 80, 80);
+		gr.setColor(Color.DARK_GRAY);
 		
-		for (int i = 1; i < 11; i++) { //Print the first 10 elements in descending order if possible
+		gr.drawString("Ranking", 75, 125);
+		gr.drawString("Player", 365, 125);
+		gr.drawString("Score", 595, 125);
+		
+		gr.setColor(Color.YELLOW);
+		
+		gr.drawString("Ranking", 80, 120);
+		gr.drawString("Player", 370, 120);
+		gr.drawString("Score", 600, 120);
+		
+		while (rs.next()) { //Print the first 10 elements in descending order if possible
 		
 			try {
-				gr.drawString(rs.getString("Names") + "                   " + rs.getLong("Points"), 80, 80 + i*50);
+				
+				gr.setColor(Color.DARK_GRAY);
+				
+				gr.drawString(counter + ".", 75, 145 + counter*50);
+				gr.drawString(rs.getString("Names"), 365, 145 + counter*50);
+				gr.drawString(rs.getLong("Points") + "", 595, 145 + counter*50);
+				
+				gr.setColor(Color.YELLOW);
+				
+				gr.drawString(counter + ".", 80, 140 + counter*50);
+				gr.drawString(rs.getString("Names"), 370, 140 + counter*50);
+				gr.drawString(rs.getLong("Points") + "", 600, 140 + counter*50);
+				
+				
 			} catch (SQLException e) { 
 				// TODO Auto-generated catch block
 				break;
 			}
 			
+			counter++;
+			
+			if (counter > 10) {
+				break;
+			}
 		
 		}
 		
