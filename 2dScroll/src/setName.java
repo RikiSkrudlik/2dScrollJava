@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JTextField;
 
 public class setName extends Thread implements KeyListener, ActionListener{
 	
@@ -44,7 +43,6 @@ public class setName extends Thread implements KeyListener, ActionListener{
 		    public void actionPerformed(ActionEvent e) {
 		        
 		    	name = nameField.getText();
-		    	w.remove(nameField);
 		    	active = false;
 		    	
 		    }
@@ -75,8 +73,8 @@ public class setName extends Thread implements KeyListener, ActionListener{
 				
 		}
 		
-		Menu.stopMusic();
-		
+		storyScreen.stopMusic();
+		w.remove(nameField);
 		fadeOut();	
 		game = new Game(w, name);
 		game.start();

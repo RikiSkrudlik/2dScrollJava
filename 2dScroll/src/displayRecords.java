@@ -53,6 +53,8 @@ public class displayRecords extends Thread implements KeyListener{
 			w.repaint();
 		}
 		
+		w.removeKeyListener(this);
+		
 	}
 	
 	public void initImages() {
@@ -138,10 +140,6 @@ public void paintScreen() throws SQLException{
 		conn.close();
 		
 	}
-	
-	
-	
-	
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -153,14 +151,15 @@ public void paintScreen() throws SQLException{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_ENTER) {
+		if (key == KeyEvent.VK_ESCAPE) {
 			try {
+				w.removeKeyListener(this);
 				active = false;
 				Menu menu = new Menu(w);
 				menu.isRecord = true;
 				Menu.active = true;
 				menu.start();
-				w.removeKeyListener(this);
+				
 				
 			} 
 			catch (Exception e1) {

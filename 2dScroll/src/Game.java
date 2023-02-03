@@ -108,7 +108,7 @@ public class Game extends Thread implements KeyListener{
 			}
 				
 			try {
-				Thread.sleep(10);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -330,7 +330,7 @@ public class Game extends Thread implements KeyListener{
 
 		if (activeUlti && intermitent%4 == 0) {
 			
-			graphics.drawRect(260, 80, 100, 40);
+			graphics.drawRect(270, 35, 100, 40);
 			
 		}
 		intermitent++;

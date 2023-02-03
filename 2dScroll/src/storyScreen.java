@@ -143,6 +143,7 @@ public class storyScreen extends Thread implements KeyListener{
 		void initSounds() throws LineUnavailableException {
 			
 			sound = new Sound();
+			playMusic(1);
 			
 		}
 		
