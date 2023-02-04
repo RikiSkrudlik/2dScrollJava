@@ -19,6 +19,7 @@ public class gameOver extends Thread implements KeyListener{
 	recordTable table;
 	String name;
 	long points;
+	
 	static Image img;
 	static Game game;
 	static boolean active = true;
@@ -57,14 +58,14 @@ public class gameOver extends Thread implements KeyListener{
 		while(active) {
 			
 			try {
+				
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			repaintScreen();
 			
-			
+			repaintScreen();		
 		}
 		
 		stopMusic();
@@ -76,11 +77,14 @@ public class gameOver extends Thread implements KeyListener{
 	}
 	
 	public void fadeOut() {
+		
 	    for (int i = 0; i <= 255; i += 5) {
+	    	
 	        gr.setColor(new Color(0, 0, 0, i));
 	        gr.fillRect(0, 0, Window.WIDTH, Window.HEIGHT);
 	        w.repaint();
 	        try {
+	        	
 	            Thread.sleep(25);
 	        } catch (InterruptedException e) {
 	            e.printStackTrace();
@@ -105,7 +109,7 @@ public class gameOver extends Thread implements KeyListener{
 		
 		gr.setColor(Color.BLACK);
 		gr.drawImage(img, 0, 0, Window.WIDTH, Window.HEIGHT, null);
-		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
+		
 		gr.setColor(Color.DARK_GRAY);
 		gr.drawString("YOU LOST... ", 115 , 355);
 		gr.drawString("PLAY AGAIN (1, 2, 3)", 115 , 455);
@@ -135,6 +139,7 @@ public class gameOver extends Thread implements KeyListener{
 		
 		Font font;
 		try {
+			
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("font/arcade.ttf"));
 			font = font.deriveFont(Font.PLAIN, 26);
 			gr.setFont(font);
@@ -151,10 +156,10 @@ public class gameOver extends Thread implements KeyListener{
 		
 		sound.setFile(i);
 		sound.play();
-		//sound.loop();
 	}
 	
 	public void stopMusic() {
+		
 		sound.stop();
 	}
 	
@@ -206,26 +211,12 @@ public class gameOver extends Thread implements KeyListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		}
-		
-		
+		}	
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) { //If 1,2,3 play again
 		// TODO Auto-generated method stub
-		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_1) {
-			active = false;
-		}
-			
-		else if (key == KeyEvent.VK_2) {
-			active = false;
-		
-		}
-		else if (key == KeyEvent.VK_3) {
-			active = false;
-		}
 
 	}
 

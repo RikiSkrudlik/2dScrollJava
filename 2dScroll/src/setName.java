@@ -28,14 +28,13 @@ public class setName extends Thread implements KeyListener, ActionListener{
 	static boolean active = true;
 	static Sound sound;
 	int counter = 0;
-
 	
 	setName(Window w){
 		this.w = w;
 		this.gr = w.gr;
 		gr.setColor(Color.YELLOW);
 		nameField.setColumns(20);
-		nameField.setBounds(350, 400, 200, 70); // set the size and location of the text field
+		nameField.setBounds(250, 400, 350, 70); // set the size and location of the text field
 		nameField.setFont(gr.getFont());
 		nameField.setForeground(Color.YELLOW);
 		nameField.setBackground(new Color(0,0,0,0)); //set transparent
@@ -69,8 +68,7 @@ public class setName extends Thread implements KeyListener, ActionListener{
 			}
 
 			repaintScreen();
-			w.repaint();
-				
+			w.repaint();		
 		}
 		
 		storyScreen.stopMusic();
@@ -85,8 +83,7 @@ public class setName extends Thread implements KeyListener, ActionListener{
 		
 		try {
 
-			setName.img = ImageIO.read(new File("res/BackgroundBlurr.png"));
-			
+			setName.img = ImageIO.read(new File("res/BackgroundBlurr.png"));			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -112,19 +109,20 @@ public class setName extends Thread implements KeyListener, ActionListener{
 		
 		gr.setColor(Color.BLACK);
 		gr.drawImage(img, 0, 0, Window.WIDTH, Window.HEIGHT, null);
-		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
+		
 		gr.setColor(Color.DARK_GRAY);
 		gr.drawString("PILOT, WHAT'S YOUR NAME? ", 65 , 355);
 
 		gr.setColor(Color.YELLOW);
-		
 		gr.drawString("PILOT, WHAT'S YOUR NAME? ", 70 , 350);
 
 		
 	}
 	
 	public void fadeOut() {
+		
 	    for (int i = 0; i <= 255; i += 5) {
+	    	
 	        gr.setColor(new Color(0, 0, 0, i));
 	        gr.fillRect(0, 0, Window.WIDTH, Window.HEIGHT);
 	        w.repaint();
@@ -168,11 +166,6 @@ public class setName extends Thread implements KeyListener, ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	
-
-	
-	
+	}	
 
 }

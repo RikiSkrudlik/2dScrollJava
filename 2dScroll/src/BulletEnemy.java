@@ -14,7 +14,6 @@ public class BulletEnemy extends Bullet{
 	
 	void move() {
 		x -= vx;
-		
 	}
 	
 	void paint(Graphics gr) {

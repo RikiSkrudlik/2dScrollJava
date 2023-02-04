@@ -19,7 +19,6 @@ public class storyScreen extends Thread implements KeyListener{
 		static setName setName;
 		static boolean active = true;
 		static Sound sound;
-		int counter = 0;
 
 		public storyScreen(Window w) {
 
@@ -31,7 +30,6 @@ public class storyScreen extends Thread implements KeyListener{
 		
 		public void run() {//Menu loop, similar procedure to the game class
 			
-			//fadeIn();
 			initImages();
 			initFont();
 			try {
@@ -55,6 +53,7 @@ public class storyScreen extends Thread implements KeyListener{
 				
 				
 			}
+			
 			fadeOut();	
 			setName = new setName(w);
 			setName.start();
@@ -91,25 +90,22 @@ public class storyScreen extends Thread implements KeyListener{
 			
 			gr.setColor(Color.BLACK);
 			gr.drawImage(img, 0, 0, Window.WIDTH, Window.HEIGHT, null);
-			//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
+
 			gr.setColor(Color.DARK_GRAY);
 			gr.drawString("YOU ARE A PILOT IN THE 365 ", 65 , 155);
 			gr.drawString("SAGITARIUS DEFENSE FLEET", 65 , 255);
 			gr.drawString("THE MOTHERSHIP HAS BEEN", 65 , 355);
-			gr.drawString("SERIOUSLY DAMAGED AND YOU", 65 , 455);
+			gr.drawString("SERIOUSLY DAMAGED AND YOU'VE", 65 , 455);
 			gr.drawString("BEEN REQUESTED TO PROTECT IT", 65 , 555);
 			gr.drawString("WHILE THE ENGINEERS FIX IT", 65, 655);
 
 			gr.setColor(Color.YELLOW);
-			
 			gr.drawString("YOU ARE A PILOT IN THE 365 ", 70 , 150);
 			gr.drawString("SAGITARIUS DEFENSE FLEET", 70, 250);
 			gr.drawString("THE MOTHERSHIP HAS BEEN", 70, 350);
-			gr.drawString("SERIOUSLY DAMAGED AND YOU", 70, 450);
+			gr.drawString("SERIOUSLY DAMAGED AND YOU'VE", 70, 450);
 			gr.drawString("BEEN REQUESTED TO PROTECT IT", 70 , 550);
 			gr.drawString("WHILE THE ENGINEERS FIX IT", 70, 650);
-			
-
 			
 		}
 		
@@ -118,7 +114,6 @@ public class storyScreen extends Thread implements KeyListener{
 			try {
 
 				storyScreen.img = ImageIO.read(new File("res/BackgroundBlurr.png"));
-				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -129,6 +124,7 @@ public class storyScreen extends Thread implements KeyListener{
 		public void initFont() {
 			
 			Font font;
+			
 			try {
 				font = Font.createFont(Font.TRUETYPE_FONT, new File("font/arcade.ttf"));
 				font = font.deriveFont(Font.PLAIN, 26);
@@ -143,8 +139,7 @@ public class storyScreen extends Thread implements KeyListener{
 		void initSounds() throws LineUnavailableException {
 			
 			sound = new Sound();
-			playMusic(1);
-			
+			playMusic(1);	
 		}
 		
 		public static void playMusic(int i) throws LineUnavailableException {
@@ -168,10 +163,10 @@ public class storyScreen extends Thread implements KeyListener{
 		public void keyPressed(KeyEvent e) {
 			// TODO Auto-generated method stub
 			int key = e.getKeyCode();
+			
 			if (key == KeyEvent.VK_ENTER) {
 				try { //We enter set name
 					active = false;
-					w.removeKeyListener(this);
 				} 
 				catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -183,13 +178,8 @@ public class storyScreen extends Thread implements KeyListener{
 		@Override
 		public void keyReleased(KeyEvent e) {
 			// TODO Auto-generated method stub
-			int key = e.getKeyCode();
-			if (key == KeyEvent.VK_ENTER) {
-				active = false;
-			}
-		}
-		
-
+			
+		}		
 }
 
 

@@ -37,6 +37,7 @@ public class displayRecords extends Thread implements KeyListener{
 		while(active) {
 			
 			try {
+				
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -44,6 +45,7 @@ public class displayRecords extends Thread implements KeyListener{
 			}
 			
 			try {
+				
 				paintScreen();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -61,8 +63,7 @@ public class displayRecords extends Thread implements KeyListener{
 		
 		try {
 
-			img = ImageIO.read(new File("res/BackgroundBlurr.png"));
-			
+			img = ImageIO.read(new File("res/BackgroundBlurr.png"));	
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,6 +75,7 @@ public class displayRecords extends Thread implements KeyListener{
 		
 		Font font;
 		try {
+			
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("font/arcade.ttf"));
 			font = font.deriveFont(Font.PLAIN, 26);
 			gr.setFont(font);
@@ -151,8 +153,10 @@ public void paintScreen() throws SQLException{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
+		
 		if (key == KeyEvent.VK_ESCAPE) {
 			try {
+				
 				w.removeKeyListener(this);
 				active = false;
 				Menu menu = new Menu(w);

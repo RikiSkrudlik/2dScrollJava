@@ -19,19 +19,6 @@ public class Enemy1 extends Enemy{
 	void move() {
 		
 		x -= speedx;
-		
-		//System.out.println("Velocitat " + speedx);
-		
-		//Now create an alterning up and down movement, every 2 seconds switch direction
-		
-//		while (System.currentTimeMillis() - lastMove >= 3000) {
-//						
-//		    // Change direction here
-//			//System.out.println("Direcció "+correction);
-//			y -= speedy*correction;
-//		    //lastMove = System.currentTimeMillis();
-//		    //if ()
-//		}
 
 	}
 	

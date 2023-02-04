@@ -17,9 +17,9 @@ import javax.sound.sampled.LineUnavailableException;
 public class Game extends Thread implements KeyListener{
 	
 	
-	static Window window;
-	static Graphics graphics;
-	static Menu menu;
+	Window window;
+	Graphics graphics;
+	Menu menu;
 	String name;
 	static Sound sound;
 	static Boolean playing = true, playerHit = false, lifeHit = false, ulti = false, activeUlti = false; //Know if you are currently playing
@@ -91,6 +91,7 @@ public class Game extends Thread implements KeyListener{
 			counter = (timeNow - initialTime)/100 + extra;
 						
 			try {
+				
 				checkCollisions();
 			} catch (LineUnavailableException e1) {
 				// TODO Auto-generated catch block
@@ -108,29 +109,32 @@ public class Game extends Thread implements KeyListener{
 			}
 				
 			try {
-				Thread.sleep(1);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 			
 			repaintScreen(); //Repaint screen
-
 		}
 		
 		playing = false;
 		window.removeKeyListener(this);
-		extra = 0;
+		extra = 0; //Resets score
 	}
 	
 	public void fadeIn() {
+		
 	    for (int i = 0; i <= 255; i += 5) {
+	    	
 	        graphics.setColor(new Color(0, 0, 0, 255-i));
 	        graphics.fillRect(0, 0, Window.WIDTH, Window.HEIGHT);
 	        window.repaint();
 	        try {
+	        	
 	            Thread.sleep(25);
 	        } catch (InterruptedException e) {
+	        	
 	            e.printStackTrace();
 	        }
 	    }
@@ -138,6 +142,7 @@ public class Game extends Thread implements KeyListener{
 	
 	void initImages() { //Initializes images for the game
 		try {
+			
 			Ship.img = ImageIO.read(new File("res/Ship1.png"));
 			Enemy1.img = ImageIO.read(new File("res/Enemy1.png"));
 			Enemy2.img = ImageIO.read(new File("res/Enemy2.png"));
@@ -160,13 +165,13 @@ public class Game extends Thread implements KeyListener{
 		player = new Ship(50, 50); //Init player
 		player.initTurbo();
 		setName.nameField.removeKeyListener(this);
-		
 	}
 	
 	void initFont() {
 		
 		Font font;
 		try {
+			
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("font/arcade.ttf"));
 			font = font.deriveFont(Font.PLAIN, 20);
 			graphics.setFont(font);
@@ -179,7 +184,6 @@ public class Game extends Thread implements KeyListener{
 	void initSounds() throws LineUnavailableException {
 		
 		sound = new Sound();
-		
 		storyScreen.playMusic(0);
 	}
 	
@@ -209,7 +213,6 @@ public class Game extends Thread implements KeyListener{
 		    }
 	}
 		
-	
 	void createEnemies(int gamemode) {
 		
 		enemyCount = 3*gamemode; //Theamount of enemies displayed (difficulty)
@@ -228,6 +231,7 @@ public class Game extends Thread implements KeyListener{
 
 		player.checkBorder();
 		player.move();
+		
 		if (life != null) {
 			life.move();
 		}
@@ -311,7 +315,6 @@ public class Game extends Thread implements KeyListener{
 		graphics.setColor(Color.YELLOW);
 		graphics.drawString("Life: " + lifeCount, 60 , 60);
 		graphics.drawString("Score: " + counter, 560 , 60);
-		//graphics.drawString("Enemies: " + enemiesKilled, 260 , 160);
 		
 		//Paint ulti sign
 		
@@ -333,6 +336,7 @@ public class Game extends Thread implements KeyListener{
 			graphics.drawRect(270, 35, 100, 40);
 			
 		}
+		
 		intermitent++;
 		player.paint(graphics);
 		

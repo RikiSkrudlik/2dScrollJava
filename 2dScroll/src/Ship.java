@@ -27,13 +27,13 @@ public class Ship {
 		if (x < 15 && vx < 0) { //Left side collision
 			return;
 		}
-		if (x > Game.window.WIDTH - WIDTH && vx > 0) {
+		if (x > Window.WIDTH - WIDTH && vx > 0) {
 			return;
 		}
 		if (y < 15 && vy < 0) {
 			return; 
 		}
-		if (y > Game.window.HEIGHT - HEIGHT && vy > 0) {
+		if (y > Window.HEIGHT - HEIGHT && vy > 0) {
 			return;
 		}
 		x += vx;
@@ -59,8 +59,6 @@ public class Ship {
 		ulti[8] = ImageIO.read(new File("res/explosion1_9.png"));
 		ulti[9] = ImageIO.read(new File("res/explosion1_10.png"));
 		ulti[10] = ImageIO.read(new File("res/explosion1_11.png"));
-
-
 		
 	}
 	
@@ -69,42 +67,41 @@ public class Ship {
 		gr.drawImage(img, x, y, WIDTH, HEIGHT, null);
 		
 		if (counter%8 == 1) { //for the exhaust animation
+			
 			gr.drawImage(turbo1, x - 45, y + 22, turboWidth, turboHeight, null);
 		}
-		else if (counter%8 == 3) { //for the exhaust animation
+		else if (counter%8 == 3) { 
+			
 			gr.drawImage(turbo2, x - 45, y + 22, turboWidth, turboHeight, null);
 		}
-		else if (counter%8 == 5) { //for the exhaust animation
+		else if (counter%8 == 5) { 
+			
 			gr.drawImage(turbo3, x - 45, y + 22, turboWidth, turboHeight, null);
 		}
-		else if (counter%8 == 7) { //for the exhaust animation
+		else if (counter%8 == 7) { 
+			
 			gr.drawImage(turbo4, x - 45, y + 22, turboWidth, turboHeight, null);
 		}
-		//gr.setColor(Color.ORANGE);
-
-		//gr.drawRect(x, y, WIDTH-30, HEIGHT -35);
 		
-		getBounds();
-		
-		if (ultiAnimation) {
+		if (ultiAnimation) { //if ulti clicked
+			
 			gr.drawImage(ulti[i], -200, -200, 1000, 1000, null);
 			i++;
 		}
 		
-		if (i == 10) {
+		if (i == 10) { //When ulti animation finished back to false
+			
 			ultiAnimation = false;
 			i = 0;
 		}
+		
 		counter++;
 
 	}
 	
-	void paintUlti(Graphics gr) {
-		
-	}
-	
 	void checkBorder() {//To check if ship touches border
-		if (x == Game.window.WIDTH) {
+		
+		if (x == Window.WIDTH) {
 			vx = 0;
 		}
 	}

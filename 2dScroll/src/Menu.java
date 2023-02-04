@@ -15,15 +15,16 @@ public class Menu extends Thread implements KeyListener{
 	
 	Window w;
 	Graphics gr;
+	
 	static Image img;
-	//static storyScreen storyscreen = new storyScreen(w);
 	static boolean active = true;
-	int recordOrplay;
 	static Sound sound;
-	int counter = 0;
+	
+	int recordOrplay;
 	Boolean isRecord = false;
 	
 	public Menu(Window w) {
+		
 		this.w = w;
 		this.gr = w.gr;
 		w.addKeyListener(this);
@@ -100,53 +101,48 @@ public class Menu extends Thread implements KeyListener{
 
 	}
 	
-	public void playMusic(int i) throws LineUnavailableException {
-		
-		sound.setFile(i);
-		sound.play();
-		sound.loop();
-	}
-	
-	
 	public void playSE(int i) throws LineUnavailableException {
 		
 		sound.setFile(i);
 		sound.play();
 	}
 	
-	public static void stopMusic() {
-		
-		sound.stop();
-	}
-	
 	public void repaintScreen() { //Paint Menu elements
 		
 		gr.setColor(Color.BLACK);
 		gr.drawImage(img, 0, 0, Window.WIDTH, Window.HEIGHT, null);
-		//graphics.drawImage(img, x, 0, window.WIDTH, window.HEIGHT, null);
+		
 		gr.setColor(Color.DARK_GRAY);
+		
 		gr.drawString("EASY MODE (PRESS 1) ", 115 , 455);
 		gr.drawString("NORMAL MODE (PRESS 2) ", 115 , 555);
 		gr.drawString("HARD MODE (PRESS 3) ", 115 , 655);
 		gr.drawString("SEE RECORD TABLE (PRESS 9) ", 115 , 150);
+		
 		gr.setColor(Color.YELLOW);
+		
 		gr.drawString("EASY MODE (PRESS 1) ", 120 , 450);
 		gr.drawString("NORMAL MODE (PRESS 2) ", 120 , 550);
 		gr.drawString("HARD MODE (PRESS 3) ", 120 , 650);
 		gr.drawString("SEE RECORD TABLE (PRESS 9) ", 115 , 155);
+		
 		w.repaint();
 
 		
 	}
 	
 	public void fadeOut() {
+		
 	    for (int i = 0; i <= 255; i += 5) {
+	    	
 	        gr.setColor(new Color(0, 0, 0, i));
 	        gr.fillRect(0, 0, Window.WIDTH, Window.HEIGHT);
 	        w.repaint();
 	        try {
+	        	
 	            Thread.sleep(25);
 	        } catch (InterruptedException e) {
+	        	
 	            e.printStackTrace();
 	        }
 	    }
@@ -165,6 +161,7 @@ public class Menu extends Thread implements KeyListener{
 		if (key == KeyEvent.VK_1) {
 			try {
 
+				playSE(8);
 				active = false;
 				w.removeKeyListener(this);
 				Game.gamemode = 1; //Easy mode
@@ -178,7 +175,7 @@ public class Menu extends Thread implements KeyListener{
 		else if (key == KeyEvent.VK_2) { 
 			try {
 				
-
+				playSE(8);
 				active = false;
 				w.removeKeyListener(this);
 				Game.gamemode = 2; //Medium	
@@ -192,7 +189,7 @@ public class Menu extends Thread implements KeyListener{
 		else if (key == KeyEvent.VK_3) { 
 			try {
 				
-
+				playSE(8);
 				Game.gamemode = 3; //Hard mode
 				active = false;
 				w.removeKeyListener(this);
@@ -209,30 +206,11 @@ public class Menu extends Thread implements KeyListener{
 				active = false;
 				w.removeKeyListener(this);
 		}
-		
-		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_1) {
-			active = false;
-		}
-			
-		else if (key == KeyEvent.VK_2) {
-			active = false;
-		
-		}
-		else if (key == KeyEvent.VK_3) {
-			active = false;
-		}
-		else if (key == KeyEvent.VK_9) { //Show records
-			
-			active = false;
-			
-		}
 
 	}
 	
