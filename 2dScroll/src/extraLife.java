@@ -20,9 +20,7 @@ public class extraLife {
 		
 		gr.drawImage(img, x, y, WIDTH, HEIGHT, null);
 		gr.setColor(Color.ORANGE);
-		//gr.drawRect(x, y, hitBoxx, hitBoxy);
-
-		getBounds();
+		
 	}
 	
 	void move() {

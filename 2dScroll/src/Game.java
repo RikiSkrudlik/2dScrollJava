@@ -62,7 +62,6 @@ public class Game extends Thread implements KeyListener{
 		initialTime = System.currentTimeMillis();
 		long timeStart = initialTime;
 		
-		System.out.println(" " +name);
 		initImages(); //Initialize images sprites for the game
 		initFont();
 		
@@ -453,16 +452,6 @@ public class Game extends Thread implements KeyListener{
 		sound.loop();
 	}
 	
-	public static void stopMusic() {
-		try {
-			sound.stop();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("ei");
-	}
-	
 	public void playSE(int i) throws LineUnavailableException {
 		
 		sound.setFile(i);
@@ -566,7 +555,8 @@ public class Game extends Thread implements KeyListener{
 			long time = timeNow - lastBullet;
 			
 			if (time < 0 || time > 300) { //Max of 1 shot per second
-			    lastBullet = timeNow;
+			    
+				lastBullet = timeNow;
 			    bullets.add(new Bullet(20 + player.x, 20 + player.y));
 			    try {
 					playSE(4);

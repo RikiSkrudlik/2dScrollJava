@@ -194,7 +194,6 @@ public class Menu extends Thread implements KeyListener{
 				active = false;
 				w.removeKeyListener(this);
 
-
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -202,9 +201,17 @@ public class Menu extends Thread implements KeyListener{
 		}
 		else if (key == KeyEvent.VK_9) { //Show records
 
-				recordOrplay = 1;
-				active = false;
-				w.removeKeyListener(this);
+				try {
+					
+					playSE(8);
+					recordOrplay = 1;
+					active = false;
+					w.removeKeyListener(this);
+					
+				} catch (LineUnavailableException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 		}
 	}
 

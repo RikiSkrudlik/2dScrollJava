@@ -147,7 +147,6 @@ public class setName extends Thread implements KeyListener, ActionListener{
 		if (key == KeyEvent.VK_ENTER) {
 			try { //We enter set name
 				active = false;
-				//w.removeKeyListener(this);
 			} 
 			catch (Exception e1) {
 				// TODO Auto-generated catch block
